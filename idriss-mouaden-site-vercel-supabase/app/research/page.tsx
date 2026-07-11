@@ -24,8 +24,7 @@ export default async function ResearchPage() {
         <div className="publication-list">
           {items.length === 0 && (
             <article className="publication-list-empty">
-              <h2 id="research-list">Project records under review</h2>
-              <p>Full project records will appear here after review.</p>
+              <h2 id="research-list">No research entries have been published yet.</h2>
             </article>
           )}
           {items.map((item, index) => (

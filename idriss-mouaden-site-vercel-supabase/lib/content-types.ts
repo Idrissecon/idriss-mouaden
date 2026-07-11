@@ -13,6 +13,7 @@ export type ContentItem = {
   externalUrl: string | null;
   documentKey: string | null;
   documentName: string | null;
+  tags: string[];
   createdAt: string;
   updatedAt: string;
 };
@@ -32,6 +33,7 @@ export type ContentRow = {
   external_url: string | null;
   document_key: string | null;
   document_name: string | null;
+  tags: string[] | null;
   created_at: string;
   updated_at: string;
 };
@@ -52,6 +54,7 @@ export function toContentItem(row: ContentRow): ContentItem {
     externalUrl: row.external_url,
     documentKey: row.document_key,
     documentName: row.document_name,
+    tags: row.tags ?? [],
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   };

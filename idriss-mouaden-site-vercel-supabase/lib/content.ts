@@ -52,5 +52,5 @@ export function contentHref(item: Pick<ContentItem, "category" | "slug">) {
 }
 
 export function contentMeta(item: ContentItem) {
-  return [item.venue, item.year?.toString()].filter(Boolean).join(" · ");
+  return [item.venue, ...item.tags, item.year?.toString()].filter(Boolean).join(" · ");
 }

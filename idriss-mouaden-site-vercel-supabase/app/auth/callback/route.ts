@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { OWNER_EMAIL } from "@/lib/admin-auth";
+import { getOwnerEmail } from "@/lib/admin-auth";
 import { createClient } from "@/lib/supabase/server";
 
 export async function GET(request: Request) {
@@ -13,7 +13,7 @@ export async function GET(request: Request) {
   if (error) return NextResponse.redirect(`${origin}/admin/login?error=invalid_link`);
 
   const { data } = await supabase.auth.getUser();
-  if (data.user?.email?.toLowerCase() !== OWNER_EMAIL) {
+  if (data.user?.email?.toLowerCase() !== getOwnerEmail()) {
     await supabase.auth.signOut();
     return NextResponse.redirect(`${origin}/admin/login?error=not_authorized`);
   }

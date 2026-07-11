@@ -1,11 +1,15 @@
 import { createClient } from "@/lib/supabase/server";
 
-export const OWNER_EMAIL = "mouadenidriss574@gmail.com";
+export function getOwnerEmail() {
+  return process.env.SITE_OWNER_EMAIL?.trim().toLowerCase() || null;
+}
 
 export async function getOwner() {
+  const ownerEmail = getOwnerEmail();
+  if (!ownerEmail) return null;
   const supabase = await createClient();
   const { data, error } = await supabase.auth.getUser();
-  if (error || data.user?.email?.toLowerCase() !== OWNER_EMAIL) return null;
+  if (error || data.user?.email?.toLowerCase() !== ownerEmail) return null;
   return data.user;
 }
 

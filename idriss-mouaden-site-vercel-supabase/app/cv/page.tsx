@@ -13,18 +13,7 @@ export default function CvPage() {
         <Link className="back-link" href="/#cv">← Home</Link>
         <p className="work-meta">Curriculum vitae</p>
         <h1>CV</h1>
-        <p>Education, distinctions, experience, and activities.</p>
       </header>
-      <section className="detail-content" aria-labelledby="cv-review">
-        <p className="detail-label">Record</p>
-        <div>
-          <h2 id="cv-review">Factual review in progress</h2>
-          <p>
-            Entries will be added only after their wording, dates, roles, and
-            distinctions have been checked.
-          </p>
-        </div>
-      </section>
     </main>
   );
 }

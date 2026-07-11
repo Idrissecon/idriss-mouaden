@@ -17,6 +17,7 @@ type Item = {
   externalUrl: string | null;
   documentKey: string | null;
   documentName: string | null;
+  tags: string[];
   updatedAt: string;
 };
 
@@ -36,6 +37,7 @@ const emptyForm: FormState = {
   externalUrl: "",
   documentKey: null,
   documentName: null,
+  tags: [],
 };
 
 export function AdminClient() {
@@ -47,12 +49,19 @@ export function AdminClient() {
   const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [newTag, setNewTag] = useState("");
 
   useEffect(() => { void loadItems(); }, []);
 
   const selectedItem = useMemo(
     () => items.find((item) => item.id === selectedId) ?? null,
     [items, selectedId],
+  );
+
+  const availableTags = useMemo(
+    () => [...new Set([...items.flatMap((item) => item.tags), ...form.tags])]
+      .sort((a, b) => a.localeCompare(b)),
+    [items, form.tags],
   );
 
   async function loadItems(select?: number) {
@@ -76,6 +85,7 @@ export function AdminClient() {
     setForm({ ...emptyForm, year: new Date().getFullYear() });
     setMessage("");
     setError("");
+    setNewTag("");
   }
 
   function selectItem(item: Item) {
@@ -94,9 +104,11 @@ export function AdminClient() {
       externalUrl: item.externalUrl ?? "",
       documentKey: item.documentKey,
       documentName: item.documentName,
+      tags: item.tags,
     });
     setMessage("");
     setError("");
+    setNewTag("");
   }
 
   async function save(event: FormEvent) {
@@ -166,6 +178,20 @@ export function AdminClient() {
     setForm((current) => ({ ...current, [key]: value }));
   }
 
+  function toggleTag(tag: string) {
+    set("tags", form.tags.includes(tag)
+      ? form.tags.filter((current) => current !== tag)
+      : [...form.tags, tag]);
+  }
+
+  function addTag() {
+    const tag = newTag.trim().replace(/\s+/g, " ").slice(0, 40);
+    if (!tag) return;
+    const existing = availableTags.find((current) => current.toLowerCase() === tag.toLowerCase());
+    if (!form.tags.includes(existing ?? tag)) set("tags", [...form.tags, existing ?? tag]);
+    setNewTag("");
+  }
+
   return (
     <div className="editor-grid">
       <aside className="content-index" aria-label="Content entries">
@@ -217,6 +243,43 @@ export function AdminClient() {
               <option value="published">Published — visible</option>
             </select>
           </label>
+        </div>
+
+        <div className="taxonomy-panel">
+          <div>
+            <p className="detail-label">Categories / tags</p>
+            <p>Choose existing labels or create a new one. An entry can have several.</p>
+          </div>
+          {availableTags.length > 0 && (
+            <div className="tag-options" aria-label="Available categories and tags">
+              {availableTags.map((tag) => (
+                <button
+                  className={form.tags.includes(tag) ? "tag-option is-selected" : "tag-option"}
+                  key={tag}
+                  onClick={() => toggleTag(tag)}
+                  type="button"
+                >
+                  {tag}
+                </button>
+              ))}
+            </div>
+          )}
+          <div className="tag-create">
+            <input
+              aria-label="New category or tag"
+              maxLength={40}
+              onChange={(event) => setNewTag(event.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  event.preventDefault();
+                  addTag();
+                }
+              }}
+              placeholder="e.g. Banking"
+              value={newTag}
+            />
+            <button className="admin-button" onClick={addTag} type="button">Add tag</button>
+          </div>
         </div>
 
         <label>Title

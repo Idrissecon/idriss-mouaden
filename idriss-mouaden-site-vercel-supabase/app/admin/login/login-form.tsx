@@ -1,9 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { createClient } from "@/lib/supabase/client";
-
-const OWNER_EMAIL = "mouadenidriss574@gmail.com";
 
 export function LoginForm() {
   const [loading, setLoading] = useState(false);
@@ -12,21 +9,22 @@ export function LoginForm() {
   async function sendLink() {
     setLoading(true);
     setMessage("");
-    const supabase = createClient();
-    const { error } = await supabase.auth.signInWithOtp({
-      email: OWNER_EMAIL,
-      options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback`,
-        shouldCreateUser: true,
-      },
+    const response = await fetch("/api/auth/magic-link", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
     });
-    setMessage(error ? error.message : "Check your email. The secure link will return you to the editor.");
+    const result = await response.json() as { error?: string };
+    setMessage(
+      response.ok
+        ? "Check your inbox. The secure link will return you to the editor."
+        : result.error || "The link could not be sent.",
+    );
     setLoading(false);
   }
 
   return (
     <div className="auth-card">
-      <p>A one-time secure link will be sent to <strong>{OWNER_EMAIL}</strong>.</p>
+      <p>A one-time secure sign-in link will be sent to the owner account.</p>
       <button className="admin-button primary" disabled={loading} onClick={sendLink} type="button">
         {loading ? "Sending…" : "Email me a sign-in link"}
       </button>

@@ -24,8 +24,7 @@ export default async function WritingPage() {
         <div className="publication-list">
           {items.length === 0 && (
             <article className="publication-list-empty">
-              <h2 id="writing-list">Publication list under review</h2>
-              <p>Finished work will appear here with its original title, date, and document.</p>
+              <h2 id="writing-list">No writing entries have been published yet.</h2>
             </article>
           )}
           {items.map((item, index) => (

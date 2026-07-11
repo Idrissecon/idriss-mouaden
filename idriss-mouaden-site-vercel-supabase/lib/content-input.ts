@@ -12,6 +12,7 @@ export type ContentInput = {
   externalUrl: string | null;
   documentKey: string | null;
   documentName: string | null;
+  tags: string[];
 };
 
 export function contentInputToRow(input: ContentInput) {
@@ -29,6 +30,7 @@ export function contentInputToRow(input: ContentInput) {
     external_url: input.externalUrl,
     document_key: input.documentKey,
     document_name: input.documentName,
+    tags: input.tags,
   };
 }
 
@@ -45,6 +47,15 @@ export function parseContentInput(value: unknown): ContentInput {
   const rawYear = Number(input.year);
   const year = Number.isInteger(rawYear) && rawYear >= 1900 && rawYear <= 2200 ? rawYear : null;
   const externalUrl = nullableText(input.externalUrl);
+  const tags = Array.isArray(input.tags)
+    ? input.tags.reduce<string[]>((result, value) => {
+        const tag = cleanText(value).replace(/\s+/g, " ").slice(0, 40);
+        if (tag && !result.some((current) => current.toLowerCase() === tag.toLowerCase())) {
+          result.push(tag);
+        }
+        return result;
+      }, []).slice(0, 12)
+    : [];
   if (externalUrl && !/^https?:\/\//i.test(externalUrl)) {
     throw new Error("El enlace externo debe empezar por http:// o https://.");
   }
@@ -63,6 +74,7 @@ export function parseContentInput(value: unknown): ContentInput {
     externalUrl,
     documentKey: nullableText(input.documentKey),
     documentName: nullableText(input.documentName),
+    tags,
   };
 }
 
