@@ -15,14 +15,16 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Idriss Mouaden",
-  description: "Academic portfolio of Idriss Mouaden.",
+  title: "Idriss Mouaden — Economics & Banking",
+  description:
+    "Research and writing by Idriss Mouaden on economics, banking, and financial institutions.",
   authors: [{ name: "Idriss Mouaden" }],
   creator: "Idriss Mouaden",
   openGraph: {
     type: "website",
-    title: "Idriss Mouaden",
-    description: "Academic portfolio of Idriss Mouaden.",
+    title: "Idriss Mouaden — Economics & Banking",
+    description:
+      "Research and writing on economics, banking, and financial institutions.",
   },
   icons: {
     icon: "/favicon.svg",

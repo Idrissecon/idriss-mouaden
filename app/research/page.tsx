@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { contentHref, contentMeta, listPublishedContent } from "@/lib/content";
+import { profile } from "@/lib/profile";
 
 export const metadata: Metadata = {
   title: "Research — Idriss Mouaden",
@@ -19,6 +20,13 @@ export default async function ResearchPage() {
         <h1>Research</h1>
         <p>Working papers, research notes, and longer projects.</p>
       </header>
+      <section className="detail-content" aria-labelledby="current-research">
+        <p className="detail-label">Current project</p>
+        <div>
+          <h2 id="current-research">{profile.currentResearch.title}</h2>
+          <p>{profile.currentResearch.description}</p>
+        </div>
+      </section>
       <section className="publication-index" aria-labelledby="research-list">
         <p className="detail-label">Selected work</p>
         <div className="publication-list">

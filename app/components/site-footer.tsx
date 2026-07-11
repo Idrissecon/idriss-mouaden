@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { profile } from "@/lib/profile";
 
 export function SiteFooter() {
   return (
@@ -13,6 +14,8 @@ export function SiteFooter() {
           <Link href="/writing">Writing</Link>
           <Link href="/about">About</Link>
           <Link href="/cv">CV</Link>
+          <a href={profile.orcid} target="_blank" rel="me noreferrer">ORCID ↗</a>
+          <a href={`mailto:${profile.contactEmail}`}>Email</a>
         </nav>
         <div className="footer-bottom">
           <p>© 2026 Idriss Mouaden</p>
