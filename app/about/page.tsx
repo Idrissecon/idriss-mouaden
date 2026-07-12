@@ -1,47 +1,46 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { messages } from "@/lib/i18n";
+import { getLocale } from "@/lib/locale";
 import { profile } from "@/lib/profile";
 import { pageMetadata } from "@/lib/seo";
 
+const spanish = messages("es").about;
 export const metadata: Metadata = pageMetadata(
-  "About",
-  "About Idriss Mouaden, an economics student and independent researcher focused on banking, financial systems, and monetary institutions.",
+  spanish.title,
+  spanish.description,
   "/about",
 );
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const m = messages(await getLocale());
   return (
     <main className="detail-page shell">
       <header className="detail-hero">
-        <Link className="back-link" href="/#experience">← Home</Link>
-        <p className="work-meta">About</p>
-        <h1>About</h1>
-        <p>{profile.role} based in {profile.location}.</p>
+        <Link className="back-link" href="/#experience">← {m.common.home}</Link>
+        <p className="work-meta">{m.about.title}</p>
+        <h1>{m.about.title}</h1>
+        <p>{m.profile.role} · {m.profile.location}</p>
       </header>
       <section className="detail-content" aria-labelledby="about-profile">
-        <p className="detail-label">Profile</p>
+        <p className="detail-label">{m.about.profile}</p>
         <div>
-          <h2 id="about-profile">Economics and financial institutions</h2>
-          <p>{profile.introduction}</p>
-          <p>
-            His interests span economics, banking and finance, political
-            economy, and mathematics. His approach is informed in part by the
-            Austrian tradition in economics, particularly its attention to
-            institutions, knowledge, and monetary order.
-          </p>
+          <h2 id="about-profile">{m.about.profileHeading}</h2>
+          <p>{m.profile.introduction}</p>
+          <p>{m.about.interests}</p>
         </div>
       </section>
       <section className="detail-content" aria-labelledby="about-research">
-        <p className="detail-label">Current research</p>
+        <p className="detail-label">{m.about.currentResearch}</p>
         <div>
-          <h2 id="about-research">{profile.currentResearch.title}</h2>
-          <p>{profile.currentResearch.description}</p>
+          <h2 id="about-research">{m.profile.currentResearchTitle}</h2>
+          <p>{m.profile.currentResearchDescription}</p>
         </div>
       </section>
       <section className="detail-content" aria-labelledby="about-links">
-        <p className="detail-label">Contact</p>
+        <p className="detail-label">{m.about.contact}</p>
         <div>
-          <h2 id="about-links">Contact and identifiers</h2>
+          <h2 id="about-links">{m.about.contactHeading}</h2>
           <p>
             <a className="text-link" href={`mailto:${profile.contactEmail}`}>{profile.contactEmail}</a>
           </p>

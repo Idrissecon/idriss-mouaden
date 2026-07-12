@@ -6,6 +6,7 @@ const sectionHeadings = new Set(["Conclusion", "Works Cited"]);
 type StructuredFigure = {
   alt: string;
   height: number;
+  openLabel?: string;
   src: string;
   width: number;
 };
@@ -29,7 +30,7 @@ export function StructuredText({ body, figure }: { body: string; figure?: Struct
         if (figure && /^Figure\s+1:/i.test(block)) {
           return (
             <figure className="publication-figure" key={index}>
-              <a href={figure.src} target="_blank" rel="noreferrer" aria-label="Open Figure 1 at full resolution">
+              <a href={figure.src} target="_blank" rel="noreferrer" aria-label={figure.openLabel ?? "Open Figure 1 at full resolution"}>
                 <Image
                   alt={figure.alt}
                   height={figure.height}

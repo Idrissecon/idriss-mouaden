@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { contentHref, contentMeta, listPublishedContent } from "@/lib/content";
+import { messages } from "@/lib/i18n";
+import { getLocale } from "@/lib/locale";
 import { cvHref, profile } from "@/lib/profile";
 import { siteConfig } from "@/lib/seo";
 
@@ -14,27 +16,29 @@ const Arrow = () => <span aria-hidden="true">→</span>;
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const [research, writing] = await Promise.all([
+  const [locale, research, writing] = await Promise.all([
+    getLocale(),
     listPublishedContent("research", 3),
     listPublishedContent("writing", 3),
   ]);
+  const m = messages(locale);
   const featuredResearch = research[0];
   return (
     <main>
       <section className="academic-hero shell" id="top" aria-labelledby="hero-title">
         <div className="academic-hero-title">
-          <p className="work-meta">High school student · Spain</p>
-          <h1 id="hero-title">Banking and financial institutions.</h1>
+          <p className="work-meta">{m.home.eyebrow}</p>
+          <h1 id="hero-title">{m.home.title}</h1>
         </div>
 
         <div className="academic-hero-summary">
-          <p>{profile.introduction}</p>
-          <div className="hero-actions" aria-label="Primary pages">
+          <p>{m.profile.introduction}</p>
+          <div className="hero-actions" aria-label={m.home.primaryPages}>
             <Link className="text-link accent-link" href="/writing">
-              Writing <Arrow />
+              {m.nav.writing} <Arrow />
             </Link>
             <Link className="text-link" href="/research">
-              Research <Arrow />
+              {m.nav.research} <Arrow />
             </Link>
             <Link className="text-link" href={cvHref}>
               CV <Arrow />
@@ -45,16 +49,16 @@ export default async function Home() {
 
       <dl className="academic-facts shell">
         <div>
-          <dt>Current focus</dt>
-          <dd>Bank liquidity</dd>
+          <dt>{m.home.currentFocus}</dt>
+          <dd>{m.home.bankLiquidity}</dd>
         </div>
         <div>
-          <dt>Fields</dt>
-          <dd>Economics · Banking & finance · Political economy</dd>
+          <dt>{m.home.fields}</dt>
+          <dd>{m.home.fieldsValue}</dd>
         </div>
         <div>
-          <dt>Recognition</dt>
-          <dd>John Locke Institute · 2026 shortlist</dd>
+          <dt>{m.home.recognition}</dt>
+          <dd>{m.home.recognitionValue}</dd>
         </div>
       </dl>
 
@@ -62,25 +66,25 @@ export default async function Home() {
         <div className="section-heading">
           <p className="section-number">01</p>
           <div>
-            <h2 id="writing-heading">Writing</h2>
-            <p className="section-note">Essays and public commentary.</p>
+            <h2 id="writing-heading">{m.nav.writing}</h2>
+            <p className="section-note">{m.home.writingNote}</p>
           </div>
         </div>
         <div className="section-body writing-list homepage-list">
           {writing.length === 0 ? (
-            <p className="publication-list-empty">No writing entries have been published yet.</p>
+            <p className="publication-list-empty">{m.home.noWriting}</p>
           ) : writing.map((item, index) => (
             <article className="writing-item" key={item.id}>
               <p className="writing-number">{String(index + 1).padStart(2, "0")}</p>
               <div>
-                <p className="item-meta">{contentMeta(item) || "Essay"}</p>
+                <p className="item-meta">{contentMeta(item) || m.common.essay}</p>
                 <h3><Link href={contentHref(item)}>{item.title}</Link></h3>
               </div>
-              <p className="writing-note">{item.status}</p>
+              <p className="writing-note">{m.common.published}</p>
             </article>
           ))}
           <Link className="text-link section-link" href="/writing">
-            Open writing archive <Arrow />
+            {m.home.openWriting} <Arrow />
           </Link>
         </div>
       </section>
@@ -89,27 +93,27 @@ export default async function Home() {
         <div className="section-heading">
           <p className="section-number">02</p>
           <div>
-            <h2 id="research-heading">Research</h2>
-            <p className="section-note">Research projects.</p>
+            <h2 id="research-heading">{m.nav.research}</h2>
+            <p className="section-note">{m.home.researchNote}</p>
           </div>
         </div>
         <div className="section-body">
           {featuredResearch ? (
             <article className="featured-work homepage-feature">
-              <p className="work-meta">{contentMeta(featuredResearch) || "Research"}</p>
+              <p className="work-meta">{contentMeta(featuredResearch) || m.common.research}</p>
               <h3>{featuredResearch.title}</h3>
               {featuredResearch.summary && <p>{featuredResearch.summary}</p>}
               <Link className="text-link" href={contentHref(featuredResearch)}>
-                View project <Arrow />
+                {m.home.viewProject} <Arrow />
               </Link>
             </article>
           ) : (
             <article className="featured-work homepage-feature">
-              <p className="work-meta">Current research · In progress</p>
-              <h3>{profile.currentResearch.title}</h3>
-              <p>{profile.currentResearch.description}</p>
+              <p className="work-meta">{m.common.current} · {m.common.inProgress}</p>
+              <h3>{m.profile.currentResearchTitle}</h3>
+              <p>{m.profile.currentResearchDescription}</p>
               <Link className="text-link" href="/research">
-                Research profile <Arrow />
+                {m.home.researchProfile} <Arrow />
               </Link>
             </article>
           )}
@@ -120,29 +124,29 @@ export default async function Home() {
         <div className="section-heading">
           <p className="section-number">03</p>
           <div>
-            <h2 id="experience-heading">Experience</h2>
-            <p className="section-note">Investment analysis and public speaking.</p>
+            <h2 id="experience-heading">{m.home.experience}</h2>
+            <p className="section-note">{m.home.experienceNote}</p>
           </div>
         </div>
         <div className="section-body timeline homepage-list">
           <article className="timeline-item">
-            <p className="timeline-date">2026 — present</p>
+            <p className="timeline-date">2026 — {m.home.present}</p>
             <div>
               <p className="item-meta">{profile.experience.organisation}</p>
-              <h3>{profile.experience.role}</h3>
-              <p>{profile.experience.description}</p>
+              <h3>{m.profile.experienceRole}</h3>
+              <p>{m.profile.experienceDescription}</p>
             </div>
           </article>
           <article className="timeline-item">
-            <p className="timeline-date">Activities</p>
+            <p className="timeline-date">{m.home.activities}</p>
             <div>
-              <p className="item-meta">Debate and civic simulation</p>
-              <h3>Public speaking</h3>
-              <p>Two provincial school debate competitions and a European Parliament simulation.</p>
+              <p className="item-meta">{m.home.debateMeta}</p>
+              <h3>{m.home.publicSpeaking}</h3>
+              <p>{m.home.publicSpeakingDescription}</p>
             </div>
           </article>
           <Link className="text-link section-link" href="/about">
-            Read background <Arrow />
+            {m.home.readBackground} <Arrow />
           </Link>
         </div>
       </section>
@@ -152,21 +156,20 @@ export default async function Home() {
           <p className="section-number">04</p>
           <div>
             <h2 id="cv-heading">CV</h2>
-            <p className="section-note">Curriculum vitae.</p>
+            <p className="section-note">{m.home.cvNote}</p>
           </div>
         </div>
         <div className="section-body cv-body">
           <div className="bio-block homepage-bio">
             <p className="bio-lead">
-              High school student in Spain, expected graduation 2028.
+              {m.home.educationLead}
             </p>
             <p>
-              Independent work across economics, banking, finance, political
-              economy, and mathematics.
+              {m.home.educationBody}
             </p>
           </div>
           <Link className="text-link section-link" href={cvHref}>
-            View curriculum vitae <Arrow />
+            {m.home.viewCv} <Arrow />
           </Link>
         </div>
       </section>

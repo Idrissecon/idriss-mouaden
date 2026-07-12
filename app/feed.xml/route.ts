@@ -23,17 +23,17 @@ export async function GET() {
         <link>${url}</link>
         <guid isPermaLink="true">${url}</guid>
         <pubDate>${date}</pubDate>
-        <category>${item.category}</category>
+        <category>${item.category === "research" ? "Investigación" : "Ensayos"}</category>
         <description>${escapeXml(item.summary)}</description>
       </item>`;
   }).join("");
   const xml = `<?xml version="1.0" encoding="UTF-8" ?>
     <rss version="2.0">
       <channel>
-        <title>${escapeXml(siteConfig.name)} — Research &amp; Writing</title>
+        <title>${escapeXml(siteConfig.name)} — Investigación y ensayos</title>
         <link>${siteConfig.url}</link>
         <description>${escapeXml(siteConfig.description)}</description>
-        <language>en</language>
+        <language>es</language>
         <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
         ${entries}
       </channel>

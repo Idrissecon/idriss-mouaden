@@ -2,24 +2,26 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { LanguageSwitcher } from "@/app/components/language-switcher";
+import { messages, type Locale } from "@/lib/i18n";
 import { cvHref } from "@/lib/profile";
 
-const navigation = [
-  { href: "/research", label: "Research" },
-  { href: "/writing", label: "Writing" },
-  { href: "/about", label: "About" },
-  { href: cvHref, label: "CV" },
-];
-
-export function SiteHeader() {
+export function SiteHeader({ locale }: { locale: Locale }) {
   const pathname = usePathname();
+  const m = messages(locale);
+  const navigation = [
+    { href: "/research", label: m.nav.research },
+    { href: "/writing", label: m.nav.writing },
+    { href: "/about", label: m.nav.about },
+    { href: cvHref, label: m.nav.cv },
+  ];
 
   return (
     <header className="site-header shell">
-      <Link className="wordmark" href="/" aria-label="Idriss Mouaden, home">
+      <Link className="wordmark" href="/" aria-label={m.nav.homeAria}>
         Idriss Mouaden
       </Link>
-      <nav className="primary-nav" aria-label="Primary navigation">
+      <nav className="primary-nav" aria-label={m.nav.primaryAria}>
         {navigation.map((item) => (
           <Link
             aria-current={pathname === item.href ? "page" : undefined}
@@ -30,6 +32,7 @@ export function SiteHeader() {
             {item.label}
           </Link>
         ))}
+        <LanguageSwitcher label={m.nav.language} locale={locale} />
       </nav>
     </header>
   );

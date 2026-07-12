@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { SiteFooter } from "./components/site-footer";
 import { SiteHeader } from "./components/site-header";
 import { JsonLd } from "./components/json-ld";
+import { getLocale } from "@/lib/locale";
 import { siteConfig, websiteStructuredData } from "@/lib/seo";
 import "./globals.css";
 
@@ -27,16 +28,16 @@ export const metadata: Metadata = {
   authors: [{ name: siteConfig.name, url: siteConfig.url }],
   creator: siteConfig.name,
   publisher: siteConfig.name,
-  category: "Economics",
+  category: "Economía",
   keywords: [
     "Idriss Mouaden",
-    "economics",
-    "banking",
-    "financial institutions",
-    "monetary economics",
-    "political economy",
-    "bank liquidity",
-    "equity research",
+    "economía",
+    "banca",
+    "instituciones financieras",
+    "economía monetaria",
+    "economía política",
+    "liquidez bancaria",
+    "análisis de inversiones",
   ],
   alternates: {
     canonical: "/",
@@ -64,7 +65,7 @@ export const metadata: Metadata = {
       url: "/opengraph-image",
       width: 1200,
       height: 630,
-      alt: `${siteConfig.name} — Economics, Banking & Financial Institutions`,
+      alt: `${siteConfig.name} — Economía, banca e instituciones financieras`,
     }],
   },
   twitter: {
@@ -80,20 +81,21 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
   return (
-    <html lang="en">
+    <html lang={locale}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <JsonLd data={websiteStructuredData} />
-        <SiteHeader />
+        <SiteHeader locale={locale} />
         {children}
-        <SiteFooter />
+        <SiteFooter locale={locale} />
       </body>
     </html>
   );

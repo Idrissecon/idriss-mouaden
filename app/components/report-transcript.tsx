@@ -1,10 +1,13 @@
-export function ReportTranscript({ body }: { body: string }) {
+import { messages, type Locale } from "@/lib/i18n";
+
+export function ReportTranscript({ body, locale }: { body: string; locale: Locale }) {
+  const m = messages(locale);
   return (
     <section className="report-transcript" aria-labelledby="report-transcript-heading">
       <details>
-        <summary id="report-transcript-heading">Accessible text transcript</summary>
+        <summary id="report-transcript-heading">{m.report.transcript}</summary>
         <p className="report-transcript-note">
-          The transcript preserves the wording and numerical content. Use the report pages above for the original table and chart layout.
+          {m.report.transcriptNote}
         </p>
         <pre>{body}</pre>
       </details>

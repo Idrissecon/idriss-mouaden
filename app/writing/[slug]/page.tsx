@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { ContentDetail } from "@/app/components/content-detail";
 import { JsonLd } from "@/app/components/json-ld";
 import { getPublishedContentBySlug } from "@/lib/content";
+import { getLocale } from "@/lib/locale";
 import { contentMetadata, contentStructuredData } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
@@ -15,12 +16,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function WritingEntryPage({ params }: PageProps) {
-  const item = await getPublishedContentBySlug("writing", (await params).slug);
+  const [item, locale] = await Promise.all([
+    getPublishedContentBySlug("writing", (await params).slug),
+    getLocale(),
+  ]);
   if (!item) notFound();
   return (
     <>
       <JsonLd data={contentStructuredData(item)} />
-      <ContentDetail item={item} />
+      <ContentDetail item={item} locale={locale} />
     </>
   );
 }

@@ -3,12 +3,14 @@ import type { ContentItem } from "@/lib/content-types";
 
 export const siteConfig = {
   name: "Idriss Mouaden",
-  title: "Idriss Mouaden — Economics, Banking & Financial Institutions",
+  title: "Idriss Mouaden — Economía, banca e instituciones financieras",
   description:
-    "Research, essays, and financial analysis by Idriss Mouaden on banking, financial institutions, monetary economics, and political economy.",
+    "Investigación, ensayos y análisis financiero de Idriss Mouaden sobre banca, instituciones financieras, economía monetaria y economía política.",
   url: "https://www.idrissmouaden.com",
-  locale: "en_GB",
-  language: "en",
+  locale: "es_ES",
+  language: "es",
+  articleLocale: "en_GB",
+  articleLanguage: "en",
 } as const;
 
 export function absoluteUrl(path = "/") {
@@ -71,12 +73,12 @@ export function contentMetadata(item: ContentItem): Metadata {
     "citation_title": item.title,
     "citation_author": siteConfig.name,
     "citation_public_url": canonical,
-    "citation_language": siteConfig.language,
+    "citation_language": siteConfig.articleLanguage,
     "citation_keywords": keywords.join("; "),
     "DC.title": item.title,
     "DC.creator": siteConfig.name,
     "DC.identifier": canonical,
-    "DC.language": siteConfig.language,
+    "DC.language": siteConfig.articleLanguage,
     "DC.type": "Text",
   };
 
@@ -101,7 +103,7 @@ export function contentMetadata(item: ContentItem): Metadata {
       title: item.title,
       description,
       siteName: siteConfig.name,
-      locale: siteConfig.locale,
+      locale: siteConfig.articleLocale,
       publishedTime: item.publicationDate ?? undefined,
       modifiedTime: item.updatedAt,
       authors: [siteConfig.name],
@@ -145,7 +147,7 @@ export function contentStructuredData(item: ContentItem) {
         author: { "@id": `${siteConfig.url}/#person` },
         publisher: { "@id": `${siteConfig.url}/#person` },
         isPartOf: { "@id": `${siteConfig.url}/#website` },
-        inLanguage: siteConfig.language,
+        inLanguage: siteConfig.articleLanguage,
         datePublished,
         dateModified: item.updatedAt,
         keywords: item.tags,
@@ -164,13 +166,13 @@ export function contentStructuredData(item: ContentItem) {
           {
             "@type": "ListItem",
             position: 1,
-            name: "Home",
+            name: "Inicio",
             item: siteConfig.url,
           },
           {
             "@type": "ListItem",
             position: 2,
-            name: item.category === "research" ? "Research" : "Writing",
+            name: item.category === "research" ? "Investigación" : "Ensayos",
             item: absoluteUrl(`/${item.category}`),
           },
           {
@@ -223,15 +225,15 @@ export const websiteStructuredData = {
       name: siteConfig.name,
       url: siteConfig.url,
       sameAs: ["https://orcid.org/0009-0007-7001-022X"],
-      jobTitle: "Independent student researcher",
+      jobTitle: "Estudiante e investigador independiente",
       description:
-        "Economics student and independent researcher focused on banking, financial systems, and monetary institutions.",
+        "Estudiante de economía e investigador independiente centrado en banca, sistemas financieros e instituciones monetarias.",
       knowsAbout: [
-        "Economics",
-        "Banking",
-        "Financial institutions",
-        "Monetary economics",
-        "Political economy",
+        "Economía",
+        "Banca",
+        "Instituciones financieras",
+        "Economía monetaria",
+        "Economía política",
       ],
     },
     {

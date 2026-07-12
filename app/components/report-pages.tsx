@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { messages, type Locale } from "@/lib/i18n";
 
 const pages = [
   "Investment recommendation and valuation overview",
@@ -16,17 +17,18 @@ const pages = [
   "Source tracker",
 ] as const;
 
-export function ReportPages() {
+export function ReportPages({ locale }: { locale: Locale }) {
+  const m = messages(locale);
   return (
     <section className="report-pages" aria-labelledby="report-pages-heading">
       <header className="report-pages-heading">
-        <p className="detail-label">Full report</p>
+        <p className="detail-label">{m.report.fullReport}</p>
         <div>
-          <h2 id="report-pages-heading">Figures, tables, and analysis</h2>
-          <p>The original report layout is reproduced below. Select any page to open it at full resolution.</p>
+          <h2 id="report-pages-heading">{m.report.heading}</h2>
+          <p>{m.report.explanation}</p>
         </div>
       </header>
-      <nav className="report-page-index" aria-label="Report pages">
+      <nav className="report-page-index" aria-label={m.report.pagesAria}>
         {pages.map((_, index) => {
           const page = index + 1;
           return <a href={`#report-page-${page}`} key={page}>{page}</a>;
@@ -40,9 +42,9 @@ export function ReportPages() {
           return (
             <li className="report-page" id={`report-page-${page}`} key={page}>
               <figure>
-                <a href={source} target="_blank" rel="noreferrer" aria-label={`Open page ${page} at full resolution`}>
+                <a href={source} target="_blank" rel="noreferrer" aria-label={m.report.openPage(page)}>
                   <Image
-                    alt={`Synchrony Financial equity report, page ${page}: ${title}`}
+                    alt={m.report.imageAlt(page, title)}
                     height={1584}
                     priority={page === 1}
                     sizes="(max-width: 900px) 94vw, 960px"
@@ -50,7 +52,7 @@ export function ReportPages() {
                     width={1224}
                   />
                 </a>
-                <figcaption><span>Page {page}</span>{title}</figcaption>
+                <figcaption><span>{m.report.page} {page}</span>{title}</figcaption>
               </figure>
             </li>
           );
