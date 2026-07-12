@@ -793,13 +793,216 @@ h2 {
   padding-top: 1.75rem;
 }
 
-.publication-body > div {
+.publication-prose {
   max-width: 48rem;
   color: #2f3c4b;
   font-family: var(--serif);
   font-size: clamp(1.15rem, 1.5vw, 1.35rem);
   line-height: 1.75;
-  white-space: pre-wrap;
+}
+
+.publication-prose p {
+  margin: 0 0 1.5em;
+}
+
+.publication-prose h2 {
+  border-top: 1px solid var(--rule);
+  margin: 3.5rem 0 1.5rem;
+  padding-top: 1.25rem;
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  line-height: 1.12;
+}
+
+.publication-prose .figure-caption {
+  border-left: 2px solid var(--oxblood);
+  margin-block: 2rem;
+  padding-left: 1rem;
+  color: var(--ink-soft);
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.publication-figure {
+  margin: 3rem 0;
+}
+
+.publication-figure > a {
+  display: block;
+  overflow: hidden;
+  border: 1px solid var(--rule-soft);
+  background: white;
+}
+
+.publication-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.publication-figure figcaption {
+  border-left: 2px solid var(--oxblood);
+  margin-top: 1rem;
+  padding-left: 1rem;
+  color: var(--ink-soft);
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.publication-prose .bibliography-entry {
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+  text-indent: -1.5rem;
+  font-size: 1.02rem;
+  line-height: 1.6;
+}
+
+.reference-link {
+  overflow-wrap: anywhere;
+  color: var(--oxblood);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--oxblood) 35%, transparent);
+  text-underline-offset: 0.16em;
+}
+
+.report-pages {
+  border-top: 1px solid var(--rule);
+  margin-top: clamp(5rem, 9vw, 9rem);
+  padding-top: 1.75rem;
+}
+
+.report-pages-heading {
+  display: grid;
+  grid-template-columns: 0.9fr 6.6fr;
+  gap: 3rem;
+}
+
+.report-pages-heading h2 {
+  margin-bottom: 0.7rem;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  line-height: 1.05;
+}
+
+.report-pages-heading p:last-child {
+  max-width: 44rem;
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+
+.report-page-index {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  max-width: 64rem;
+  margin: 2rem auto 3rem;
+}
+
+.report-page-index a {
+  display: grid;
+  width: 2.25rem;
+  height: 2.25rem;
+  place-items: center;
+  border: 1px solid var(--rule);
+  border-radius: 50%;
+  color: var(--ink-soft);
+  font-size: 0.78rem;
+  text-decoration: none;
+  transition: border-color 160ms ease, color 160ms ease, background 160ms ease;
+}
+
+.report-page-index a:hover,
+.report-page-index a:focus-visible {
+  border-color: var(--oxblood);
+  background: color-mix(in srgb, var(--oxblood) 7%, white);
+  color: var(--oxblood);
+}
+
+.report-page-list {
+  display: grid;
+  gap: clamp(3rem, 7vw, 6rem);
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+}
+
+.report-page {
+  scroll-margin-top: 2rem;
+}
+
+.report-page figure {
+  margin: 0;
+}
+
+.report-page figure > a {
+  display: block;
+  overflow: hidden;
+  border: 1px solid #cbd2d9;
+  background: white;
+  box-shadow: 0 1.25rem 3.5rem rgba(31, 43, 55, 0.12);
+}
+
+.report-page img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.report-page figcaption {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-top: 0.9rem;
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.report-page figcaption span {
+  flex: 0 0 auto;
+  color: var(--oxblood);
+  font-family: var(--font-geist-mono), monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.report-transcript {
+  border-top: 1px solid var(--rule);
+  margin-top: clamp(5rem, 9vw, 9rem);
+  padding-top: 1.75rem;
+}
+
+.report-transcript details {
+  max-width: 64rem;
+  margin: 0 auto;
+}
+
+.report-transcript summary {
+  cursor: pointer;
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+.report-transcript-note {
+  max-width: 44rem;
+  margin: 1.25rem 0;
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+
+.report-transcript pre {
+  overflow-x: auto;
+  border: 1px solid var(--rule);
+  background: #f4f6f8;
+  padding: clamp(1rem, 3vw, 2rem);
+  color: #243342;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.78rem;
+  line-height: 1.55;
+  tab-size: 4;
+  white-space: pre;
 }
 
 .admin-shell {
@@ -1162,9 +1365,14 @@ h2 {
 @media (max-width: 900px) {
   .publication-index,
   .publication-body,
+  .report-pages-heading,
   .admin-heading,
   .editor-grid {
     grid-template-columns: 1fr;
+  }
+
+  .report-pages-heading {
+    gap: 1rem;
   }
 
   .content-index {
