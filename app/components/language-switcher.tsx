@@ -36,8 +36,8 @@ export function LanguageSwitcher({ label, locale }: { label: string; locale: Loc
         onChange={changeLanguage}
         value={selected}
       >
-        <option value="es">ES</option>
         <option value="en">EN</option>
+        <option value="es">ES</option>
       </select>
     </label>
   );

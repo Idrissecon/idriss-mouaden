@@ -2,9 +2,9 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Idriss Mouaden — Investigación y ensayos",
+    name: "Idriss Mouaden — Research and writing",
     short_name: "Idriss Mouaden",
-    description: "Investigación y ensayos sobre economía, banca e instituciones financieras.",
+    description: "Research and writing on economics, banking, and financial institutions.",
     start_url: "/",
     display: "standalone",
     background_color: "#f4efe5",

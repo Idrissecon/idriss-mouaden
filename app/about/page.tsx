@@ -5,10 +5,10 @@ import { getLocale } from "@/lib/locale";
 import { profile } from "@/lib/profile";
 import { pageMetadata } from "@/lib/seo";
 
-const spanish = messages("es").about;
+const english = messages("en").about;
 export const metadata: Metadata = pageMetadata(
-  spanish.title,
-  spanish.description,
+  english.title,
+  english.description,
   "/about",
 );
 

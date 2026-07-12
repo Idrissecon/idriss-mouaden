@@ -3,12 +3,12 @@ import type { ContentItem } from "@/lib/content-types";
 
 export const siteConfig = {
   name: "Idriss Mouaden",
-  title: "Idriss Mouaden — Economía, banca e instituciones financieras",
+  title: "Idriss Mouaden — Economics, Banking & Financial Institutions",
   description:
-    "Investigación, ensayos y análisis financiero de Idriss Mouaden sobre banca, instituciones financieras, economía monetaria y economía política.",
+    "Research, essays, and financial analysis by Idriss Mouaden on banking, financial institutions, monetary economics, and political economy.",
   url: "https://www.idrissmouaden.com",
-  locale: "es_ES",
-  language: "es",
+  locale: "en_GB",
+  language: "en",
   articleLocale: "en_GB",
   articleLanguage: "en",
 } as const;
@@ -166,13 +166,13 @@ export function contentStructuredData(item: ContentItem) {
           {
             "@type": "ListItem",
             position: 1,
-            name: "Inicio",
+            name: "Home",
             item: siteConfig.url,
           },
           {
             "@type": "ListItem",
             position: 2,
-            name: item.category === "research" ? "Investigación" : "Ensayos",
+            name: item.category === "research" ? "Research" : "Writing",
             item: absoluteUrl(`/${item.category}`),
           },
           {
@@ -225,15 +225,15 @@ export const websiteStructuredData = {
       name: siteConfig.name,
       url: siteConfig.url,
       sameAs: ["https://orcid.org/0009-0007-7001-022X"],
-      jobTitle: "Estudiante e investigador independiente",
+      jobTitle: "Independent student researcher",
       description:
-        "Estudiante de economía e investigador independiente centrado en banca, sistemas financieros e instituciones monetarias.",
+        "Economics student and independent researcher focused on banking, financial systems, and monetary institutions.",
       knowsAbout: [
-        "Economía",
-        "Banca",
-        "Instituciones financieras",
-        "Economía monetaria",
-        "Economía política",
+        "Economics",
+        "Banking",
+        "Financial institutions",
+        "Monetary economics",
+        "Political economy",
       ],
     },
     {

@@ -6,10 +6,10 @@ import { getLocale } from "@/lib/locale";
 import { cvDocumentHref, profile } from "@/lib/profile";
 import { pageMetadata } from "@/lib/seo";
 
-const spanish = messages("es").cv;
+const english = messages("en").cv;
 export const metadata: Metadata = pageMetadata(
   "CV",
-  spanish.description,
+  english.description,
   "/cv",
 );
 

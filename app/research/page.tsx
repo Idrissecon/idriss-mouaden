@@ -6,10 +6,10 @@ import { messages } from "@/lib/i18n";
 import { getLocale } from "@/lib/locale";
 import { collectionStructuredData, pageMetadata } from "@/lib/seo";
 
-const spanish = messages("es").researchPage;
+const english = messages("en").researchPage;
 export const metadata: Metadata = pageMetadata(
-  spanish.title,
-  spanish.description,
+  english.title,
+  english.description,
   "/research",
 );
 
@@ -23,7 +23,7 @@ export default async function ResearchPage() {
   const m = messages(locale);
   return (
     <>
-      <JsonLd data={collectionStructuredData(spanish.title, spanish.description, "/research", items)} />
+      <JsonLd data={collectionStructuredData(english.title, english.description, "/research", items)} />
       <main className="detail-page shell">
         <header className="detail-hero">
           <Link className="back-link" href="/#research">← {m.common.home}</Link>
