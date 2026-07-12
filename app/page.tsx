@@ -23,11 +23,11 @@ export default async function Home() {
         <div className="academic-hero-summary">
           <p>{profile.introduction}</p>
           <div className="hero-actions" aria-label="Primary pages">
-            <Link className="text-link accent-link" href="/research">
-              Research <Arrow />
-            </Link>
-            <Link className="text-link" href="/writing">
+            <Link className="text-link accent-link" href="/writing">
               Writing <Arrow />
+            </Link>
+            <Link className="text-link" href="/research">
+              Research <Arrow />
             </Link>
             <Link className="text-link" href="/cv">
               CV <Arrow />
@@ -51,9 +51,36 @@ export default async function Home() {
         </div>
       </dl>
 
-      <section className="portfolio-section home-section shell" id="research" aria-labelledby="research-heading">
+      <section className="portfolio-section home-section shell" id="writing" aria-labelledby="writing-heading">
         <div className="section-heading">
           <p className="section-number">01</p>
+          <div>
+            <h2 id="writing-heading">Writing</h2>
+            <p className="section-note">Essays and public commentary.</p>
+          </div>
+        </div>
+        <div className="section-body writing-list homepage-list">
+          {writing.length === 0 ? (
+            <p className="publication-list-empty">No writing entries have been published yet.</p>
+          ) : writing.map((item, index) => (
+            <article className="writing-item" key={item.id}>
+              <p className="writing-number">{String(index + 1).padStart(2, "0")}</p>
+              <div>
+                <p className="item-meta">{contentMeta(item) || "Essay"}</p>
+                <h3><Link href={contentHref(item)}>{item.title}</Link></h3>
+              </div>
+              <p className="writing-note">{item.status}</p>
+            </article>
+          ))}
+          <Link className="text-link section-link" href="/writing">
+            Open writing archive <Arrow />
+          </Link>
+        </div>
+      </section>
+
+      <section className="portfolio-section home-section shell" id="research" aria-labelledby="research-heading">
+        <div className="section-heading">
+          <p className="section-number">02</p>
           <div>
             <h2 id="research-heading">Research</h2>
             <p className="section-note">Research projects.</p>
@@ -79,33 +106,6 @@ export default async function Home() {
               </Link>
             </article>
           )}
-        </div>
-      </section>
-
-      <section className="portfolio-section home-section shell" id="writing" aria-labelledby="writing-heading">
-        <div className="section-heading">
-          <p className="section-number">02</p>
-          <div>
-            <h2 id="writing-heading">Writing</h2>
-            <p className="section-note">Essays and public commentary.</p>
-          </div>
-        </div>
-        <div className="section-body writing-list homepage-list">
-          {writing.length === 0 ? (
-            <p className="publication-list-empty">No writing entries have been published yet.</p>
-          ) : writing.map((item, index) => (
-            <article className="writing-item" key={item.id}>
-              <p className="writing-number">{String(index + 1).padStart(2, "0")}</p>
-              <div>
-                <p className="item-meta">{contentMeta(item) || "Essay"}</p>
-                <h3><Link href={contentHref(item)}>{item.title}</Link></h3>
-              </div>
-              <p className="writing-note">{item.status}</p>
-            </article>
-          ))}
-          <Link className="text-link section-link" href="/writing">
-            Open writing archive <Arrow />
-          </Link>
         </div>
       </section>
 
