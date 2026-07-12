@@ -37,6 +37,5 @@ export const profile = {
   },
 } as const;
 
-// Set this to the public PDF path when the final CV is supplied.
-export const cvDocumentHref: string | null = null;
+export const cvDocumentHref: string | null = "/documents/idriss-mouaden-academic-cv.pdf";
 export const cvHref = cvDocumentHref ?? "/cv";
