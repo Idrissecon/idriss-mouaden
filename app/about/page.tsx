@@ -39,12 +39,16 @@ export default function AboutPage() {
         </div>
       </section>
       <section className="detail-content" aria-labelledby="about-links">
-        <p className="detail-label">Links</p>
+        <p className="detail-label">Contact</p>
         <div>
           <h2 id="about-links">Contact and identifiers</h2>
           <p>
-            <a className="text-link" href={`mailto:${profile.contactEmail}`}>Email</a>
-            {" · "}
+            <a className="text-link" href={`mailto:${profile.contactEmail}`}>{profile.contactEmail}</a>
+          </p>
+          <p>
+            <a className="text-link" href={profile.contactPhone.href}>{profile.contactPhone.display}</a>
+          </p>
+          <p>
             <a className="text-link" href={profile.orcid} target="_blank" rel="me noreferrer">ORCID ↗</a>
           </p>
         </div>

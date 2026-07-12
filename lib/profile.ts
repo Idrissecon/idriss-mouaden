@@ -5,7 +5,7 @@ export const profile = {
     "Economics student and independent researcher working on banking, financial systems, and monetary institutions.",
   fields: ["Economics", "Banking & finance", "Political economy", "Mathematics"],
   education: {
-    programme: "International Baccalaureate Diploma Programme",
+    programme: "High school education",
     expected: 2028,
   },
   currentResearch: {
@@ -31,4 +31,12 @@ export const profile = {
   ],
   orcid: "https://orcid.org/0009-0007-7001-022X",
   contactEmail: "idriss@idrissmouaden.com",
+  contactPhone: {
+    display: "+34 612 20 55 08",
+    href: "tel:+34612205508",
+  },
 } as const;
+
+// Set this to the public PDF path when the final CV is supplied.
+export const cvDocumentHref: string | null = null;
+export const cvHref = cvDocumentHref ?? "/cv";

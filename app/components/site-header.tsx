@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { cvHref } from "@/lib/profile";
 
 const navigation = [
   { href: "/research", label: "Research" },
   { href: "/writing", label: "Writing" },
   { href: "/about", label: "About" },
-  { href: "/cv", label: "CV" },
+  { href: cvHref, label: "CV" },
 ];
 
 export function SiteHeader() {

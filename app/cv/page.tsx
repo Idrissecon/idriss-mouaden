@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { profile } from "@/lib/profile";
+import { redirect } from "next/navigation";
+import { cvDocumentHref, profile } from "@/lib/profile";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata(
@@ -10,6 +11,8 @@ export const metadata: Metadata = pageMetadata(
 );
 
 export default function CvPage() {
+  if (cvDocumentHref) redirect(cvDocumentHref);
+
   return (
     <main className="detail-page shell">
       <header className="detail-hero">

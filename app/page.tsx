@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { contentHref, contentMeta, listPublishedContent } from "@/lib/content";
-import { profile } from "@/lib/profile";
+import { cvHref, profile } from "@/lib/profile";
 import { siteConfig } from "@/lib/seo";
 
 export const metadata: Metadata = {
@@ -36,7 +36,7 @@ export default async function Home() {
             <Link className="text-link" href="/research">
               Research <Arrow />
             </Link>
-            <Link className="text-link" href="/cv">
+            <Link className="text-link" href={cvHref}>
               CV <Arrow />
             </Link>
           </div>
@@ -158,14 +158,14 @@ export default async function Home() {
         <div className="section-body cv-body">
           <div className="bio-block homepage-bio">
             <p className="bio-lead">
-              IB Diploma Programme candidate in Spain, expected 2028.
+              High school student in Spain, expected graduation 2028.
             </p>
             <p>
               Independent work across economics, banking, finance, political
               economy, and mathematics.
             </p>
           </div>
-          <Link className="text-link section-link" href="/cv">
+          <Link className="text-link section-link" href={cvHref}>
             View curriculum vitae <Arrow />
           </Link>
         </div>

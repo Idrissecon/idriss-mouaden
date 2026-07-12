@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { profile } from "@/lib/profile";
+import { cvHref, profile } from "@/lib/profile";
 
 export function SiteFooter() {
   return (
@@ -13,7 +13,7 @@ export function SiteFooter() {
           <Link href="/research">Research</Link>
           <Link href="/writing">Writing</Link>
           <Link href="/about">About</Link>
-          <Link href="/cv">CV</Link>
+          <Link href={cvHref}>CV</Link>
           <a href={profile.orcid} target="_blank" rel="me noreferrer">ORCID ↗</a>
           <a href={`mailto:${profile.contactEmail}`}>Email</a>
         </nav>
