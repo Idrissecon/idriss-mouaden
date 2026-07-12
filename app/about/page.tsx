@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { profile } from "@/lib/profile";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "About — Idriss Mouaden",
-  description: "About Idriss Mouaden.",
-};
+export const metadata: Metadata = pageMetadata(
+  "About",
+  "About Idriss Mouaden, an economics student and independent researcher focused on banking, financial systems, and monetary institutions.",
+  "/about",
+);
 
 export default function AboutPage() {
   return (

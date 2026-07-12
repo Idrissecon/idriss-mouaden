@@ -4,7 +4,7 @@ import { getOwner } from "@/lib/admin-auth";
 import { AdminClient } from "./admin-client";
 
 export const metadata = {
-  title: "Content editor — Idriss Mouaden",
+  title: "Content editor",
   robots: { index: false, follow: false },
 };
 

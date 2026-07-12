@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { profile } from "@/lib/profile";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "CV — Idriss Mouaden",
-  description: "Academic CV of Idriss Mouaden.",
-};
+export const metadata: Metadata = pageMetadata(
+  "CV",
+  "Academic CV of Idriss Mouaden: education, independent research, investment analysis, recognition, debate, and public speaking.",
+  "/cv",
+);
 
 export default function CvPage() {
   return (

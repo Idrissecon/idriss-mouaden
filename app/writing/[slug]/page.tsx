@@ -1,11 +1,26 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ContentDetail } from "@/app/components/content-detail";
+import { JsonLd } from "@/app/components/json-ld";
 import { getPublishedContentBySlug } from "@/lib/content";
+import { contentMetadata, contentStructuredData } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
-export default async function WritingEntryPage({ params }: { params: Promise<{ slug: string }> }) {
+type PageProps = { params: Promise<{ slug: string }> };
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const item = await getPublishedContentBySlug("writing", (await params).slug);
+  return item ? contentMetadata(item) : {};
+}
+
+export default async function WritingEntryPage({ params }: PageProps) {
   const item = await getPublishedContentBySlug("writing", (await params).slug);
   if (!item) notFound();
-  return <ContentDetail item={item} />;
+  return (
+    <>
+      <JsonLd data={contentStructuredData(item)} />
+      <ContentDetail item={item} />
+    </>
+  );
 }

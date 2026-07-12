@@ -1,18 +1,24 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { JsonLd } from "@/app/components/json-ld";
 import { contentHref, contentMeta, listPublishedContent } from "@/lib/content";
+import { collectionStructuredData, pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Writing — Idriss Mouaden",
-  description: "Essays and writing by Idriss Mouaden.",
-};
+const description = "Essays by Idriss Mouaden on economics, monetary institutions, political economy, liberty, and the evolution of social order.";
+export const metadata: Metadata = pageMetadata(
+  "Writing",
+  description,
+  "/writing",
+);
 
 export const dynamic = "force-dynamic";
 
 export default async function WritingPage() {
   const items = await listPublishedContent("writing");
   return (
-    <main className="detail-page shell">
+    <>
+      <JsonLd data={collectionStructuredData("Writing", description, "/writing", items)} />
+      <main className="detail-page shell">
       <header className="detail-hero">
         <Link className="back-link" href="/#writing">← Home</Link>
         <p className="work-meta">Writing</p>
@@ -42,6 +48,7 @@ export default async function WritingPage() {
           ))}
         </div>
       </section>
-    </main>
+      </main>
+    </>
   );
 }

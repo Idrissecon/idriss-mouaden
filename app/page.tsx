@@ -1,6 +1,13 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { contentHref, contentMeta, listPublishedContent } from "@/lib/content";
 import { profile } from "@/lib/profile";
+import { siteConfig } from "@/lib/seo";
+
+export const metadata: Metadata = {
+  description: siteConfig.description,
+  alternates: { canonical: "/" },
+};
 
 const Arrow = () => <span aria-hidden="true">→</span>;
 

@@ -3,7 +3,7 @@ import { getOwner } from "@/lib/admin-auth";
 import { LoginForm } from "./login-form";
 
 export const metadata = {
-  title: "Editor sign in — Idriss Mouaden",
+  title: "Editor sign in",
   robots: { index: false, follow: false },
 };
 
