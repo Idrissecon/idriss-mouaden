@@ -17,7 +17,7 @@ export default async function AboutPage() {
   return (
     <main className="detail-page shell">
       <header className="detail-hero">
-        <Link className="back-link" href="/#experience">← {m.common.home}</Link>
+        <Link className="back-link" href="/#about">← {m.common.home}</Link>
         <p className="work-meta">{m.about.title}</p>
         <h1>{m.about.title}</h1>
         <p>{m.profile.role} · {m.profile.location}</p>
@@ -43,9 +43,6 @@ export default async function AboutPage() {
           <h2 id="about-links">{m.about.contactHeading}</h2>
           <p>
             <a className="text-link" href={`mailto:${profile.contactEmail}`}>{profile.contactEmail}</a>
-          </p>
-          <p>
-            <a className="text-link" href={profile.contactPhone.href}>{profile.contactPhone.display}</a>
           </p>
           <p>
             <a className="text-link" href={profile.orcid} target="_blank" rel="me noreferrer">ORCID ↗</a>

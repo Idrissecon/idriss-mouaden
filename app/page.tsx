@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { contentHref, contentMeta, listPublishedContent } from "@/lib/content";
+import { contentDisplayStatus, contentHref, contentMeta, listPublishedContent } from "@/lib/content";
 import { messages } from "@/lib/i18n";
 import { getLocale } from "@/lib/locale";
 import { cvHref, profile } from "@/lib/profile";
@@ -34,11 +34,11 @@ export default async function Home() {
         <div className="academic-hero-summary">
           <p>{m.profile.introduction}</p>
           <div className="hero-actions" aria-label={m.home.primaryPages}>
-            <Link className="text-link accent-link" href="/writing">
-              {m.nav.writing} <Arrow />
-            </Link>
-            <Link className="text-link" href="/research">
+            <Link className="text-link accent-link" href="/research">
               {m.nav.research} <Arrow />
+            </Link>
+            <Link className="text-link" href="/writing">
+              {m.nav.writing} <Arrow />
             </Link>
             <Link className="text-link" href={cvHref}>
               CV <Arrow />
@@ -62,36 +62,9 @@ export default async function Home() {
         </div>
       </dl>
 
-      <section className="portfolio-section home-section shell" id="writing" aria-labelledby="writing-heading">
-        <div className="section-heading">
-          <p className="section-number">01</p>
-          <div>
-            <h2 id="writing-heading">{m.nav.writing}</h2>
-            <p className="section-note">{m.home.writingNote}</p>
-          </div>
-        </div>
-        <div className="section-body writing-list homepage-list">
-          {writing.length === 0 ? (
-            <p className="publication-list-empty">{m.home.noWriting}</p>
-          ) : writing.map((item, index) => (
-            <article className="writing-item" key={item.id}>
-              <p className="writing-number">{String(index + 1).padStart(2, "0")}</p>
-              <div>
-                <p className="item-meta">{contentMeta(item) || m.common.essay}</p>
-                <h3><Link href={contentHref(item)}>{item.title}</Link></h3>
-              </div>
-              <p className="writing-note">{m.common.published}</p>
-            </article>
-          ))}
-          <Link className="text-link section-link" href="/writing">
-            {m.home.openWriting} <Arrow />
-          </Link>
-        </div>
-      </section>
-
       <section className="portfolio-section home-section shell" id="research" aria-labelledby="research-heading">
         <div className="section-heading">
-          <p className="section-number">02</p>
+          <p className="section-number">01</p>
           <div>
             <h2 id="research-heading">{m.nav.research}</h2>
             <p className="section-note">{m.home.researchNote}</p>
@@ -120,11 +93,38 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="portfolio-section home-section shell" id="experience" aria-labelledby="experience-heading">
+      <section className="portfolio-section home-section shell" id="writing" aria-labelledby="writing-heading">
+        <div className="section-heading">
+          <p className="section-number">02</p>
+          <div>
+            <h2 id="writing-heading">{m.nav.writing}</h2>
+            <p className="section-note">{m.home.writingNote}</p>
+          </div>
+        </div>
+        <div className="section-body writing-list homepage-list">
+          {writing.length === 0 ? (
+            <p className="publication-list-empty">{m.home.noWriting}</p>
+          ) : writing.map((item, index) => (
+            <article className="writing-item" key={item.id}>
+              <p className="writing-number">{String(index + 1).padStart(2, "0")}</p>
+              <div>
+                <p className="item-meta">{contentMeta(item) || m.common.essay}</p>
+                <h3><Link href={contentHref(item)}>{item.title}</Link></h3>
+              </div>
+              <p className="writing-note">{contentDisplayStatus(item)}</p>
+            </article>
+          ))}
+          <Link className="text-link section-link" href="/writing">
+            {m.home.openWriting} <Arrow />
+          </Link>
+        </div>
+      </section>
+
+      <section className="portfolio-section home-section shell" id="about" aria-labelledby="about-heading">
         <div className="section-heading">
           <p className="section-number">03</p>
           <div>
-            <h2 id="experience-heading">{m.home.experience}</h2>
+            <h2 id="about-heading">{m.nav.about}</h2>
             <p className="section-note">{m.home.experienceNote}</p>
           </div>
         </div>
@@ -147,29 +147,6 @@ export default async function Home() {
           </article>
           <Link className="text-link section-link" href="/about">
             {m.home.readBackground} <Arrow />
-          </Link>
-        </div>
-      </section>
-
-      <section className="portfolio-section home-section cv-section shell" id="cv" aria-labelledby="cv-heading">
-        <div className="section-heading">
-          <p className="section-number">04</p>
-          <div>
-            <h2 id="cv-heading">CV</h2>
-            <p className="section-note">{m.home.cvNote}</p>
-          </div>
-        </div>
-        <div className="section-body cv-body">
-          <div className="bio-block homepage-bio">
-            <p className="bio-lead">
-              {m.home.educationLead}
-            </p>
-            <p>
-              {m.home.educationBody}
-            </p>
-          </div>
-          <Link className="text-link section-link" href={cvHref}>
-            {m.home.viewCv} <Arrow />
           </Link>
         </div>
       </section>

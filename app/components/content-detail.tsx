@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { PublicContentItem } from "@/lib/content";
-import { contentMeta } from "@/lib/content";
+import { contentDisplayStatus, contentMeta } from "@/lib/content";
 import { ReportPages } from "@/app/components/report-pages";
 import { ReportTranscript } from "@/app/components/report-transcript";
 import { StructuredText } from "@/app/components/structured-text";
@@ -26,6 +26,7 @@ export function ContentDetail({ item, locale }: { item: PublicContentItem; local
           {item.category === "research" ? m.content.researchCategory : m.content.writingCategory}
           {meta ? ` · ${meta}` : ""}
         </p>
+        <p className="publication-status">{contentDisplayStatus(item)}</p>
         <h1>{item.title}</h1>
         {item.summary && <p className="publication-summary">{item.summary}</p>}
         <div className="publication-links">

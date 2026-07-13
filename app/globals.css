@@ -386,8 +386,7 @@ h2 {
 }
 
 .item-meta,
-.timeline-date,
-.writing-note {
+.timeline-date {
   margin: 0;
   color: var(--ink-soft);
   font-size: 0.73rem;
@@ -395,6 +394,15 @@ h2 {
   letter-spacing: 0.12em;
   line-height: 1.5;
   text-transform: uppercase;
+}
+
+.writing-note {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.73rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
 }
 
 .research-item h3,
@@ -792,6 +800,14 @@ h2 {
 
 .publication-hero .work-meta {
   margin: 0 0 1.5rem;
+}
+
+.publication-hero .publication-status {
+  margin: -0.75rem 0 1.5rem;
+  color: var(--ink-soft);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
 }
 
 .publication-hero h1 {

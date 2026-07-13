@@ -54,3 +54,13 @@ export function contentHref(item: Pick<ContentItem, "category" | "slug">) {
 export function contentMeta(item: ContentItem) {
   return [item.venue, ...item.tags, item.year?.toString()].filter(Boolean).join(" · ");
 }
+
+const displayStatusBySlug: Record<string, string> = {
+  "cashlessness-and-monetary-discretion": "Shortlisted · Full text forthcoming",
+  "the-end-of-exit": "Submitted · Decision pending",
+  "nations-states-and-the-free-evolution-of-social-order": "Published",
+};
+
+export function contentDisplayStatus(item: Pick<ContentItem, "slug">) {
+  return displayStatusBySlug[item.slug] ?? "Published";
+}
