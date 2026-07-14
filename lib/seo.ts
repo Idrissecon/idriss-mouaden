@@ -96,6 +96,7 @@ export function contentMetadata(item: ContentItem): Metadata {
     description,
     keywords,
     authors: [{ name: siteConfig.name, url: siteConfig.url }],
+    robots: item.status === "draft" ? { index: false, follow: false } : undefined,
     alternates: { canonical: path },
     openGraph: {
       type: "article",
@@ -109,18 +110,11 @@ export function contentMetadata(item: ContentItem): Metadata {
       authors: [siteConfig.name],
       section: item.category === "research" ? "Research" : "Writing",
       tags: item.tags,
-      images: [{
-        url: "/opengraph-image",
-        width: 1200,
-        height: 630,
-        alt: `${item.title} — ${siteConfig.name}`,
-      }],
     },
     twitter: {
       card: "summary_large_image",
       title: item.title,
       description,
-      images: ["/opengraph-image"],
     },
     other,
   };

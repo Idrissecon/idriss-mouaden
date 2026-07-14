@@ -18,6 +18,9 @@ export function ContentDetail({ item, locale }: { item: PublicContentItem; local
   const isNationStateEssay = item.slug === "nations-states-and-the-free-evolution-of-social-order";
   return (
     <main className="detail-page shell publication-page">
+      {item.status === "draft" && (
+        <p className="admin-notice draft-banner" role="status">{m.content.draftNotice}</p>
+      )}
       <header className="publication-hero">
         <Link className="back-link" href={`/${item.category}`}>
           {item.category === "research" ? m.content.backResearch : m.content.backWriting}

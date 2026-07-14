@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useEffect, useMemo, useState } from "react";
+import { slugify } from "@/lib/content-input";
 
 type Item = {
   id: number;
@@ -17,6 +18,8 @@ type Item = {
   externalUrl: string | null;
   documentKey: string | null;
   documentName: string | null;
+  displayStatusEn: string | null;
+  displayStatusEs: string | null;
   tags: string[];
   updatedAt: string;
 };
@@ -37,6 +40,8 @@ const emptyForm: FormState = {
   externalUrl: "",
   documentKey: null,
   documentName: null,
+  displayStatusEn: "",
+  displayStatusEs: "",
   tags: [],
 };
 
@@ -50,8 +55,17 @@ export function AdminClient() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [newTag, setNewTag] = useState("");
+  const [slugEdited, setSlugEdited] = useState(false);
+  const [dirty, setDirty] = useState(false);
 
   useEffect(() => { void loadItems(); }, []);
+
+  useEffect(() => {
+    if (!dirty) return;
+    const warn = (event: BeforeUnloadEvent) => event.preventDefault();
+    window.addEventListener("beforeunload", warn);
+    return () => window.removeEventListener("beforeunload", warn);
+  }, [dirty]);
 
   const selectedItem = useMemo(
     () => items.find((item) => item.id === selectedId) ?? null,
@@ -80,15 +94,27 @@ export function AdminClient() {
     }
   }
 
-  function startNew() {
+  function confirmDiscard() {
+    return !dirty || window.confirm("Discard unsaved changes?");
+  }
+
+  function startNew(force = false) {
+    if (!force && !confirmDiscard()) return;
     setSelectedId(null);
     setForm({ ...emptyForm, year: new Date().getFullYear() });
     setMessage("");
     setError("");
     setNewTag("");
+    setSlugEdited(false);
+    setDirty(false);
   }
 
   function selectItem(item: Item) {
+    if (!confirmDiscard()) return;
+    applyItem(item);
+  }
+
+  function applyItem(item: Item) {
     setSelectedId(item.id);
     setForm({
       title: item.title,
@@ -104,15 +130,28 @@ export function AdminClient() {
       externalUrl: item.externalUrl ?? "",
       documentKey: item.documentKey,
       documentName: item.documentName,
+      displayStatusEn: item.displayStatusEn ?? "",
+      displayStatusEs: item.displayStatusEs ?? "",
       tags: item.tags,
     });
     setMessage("");
     setError("");
     setNewTag("");
+    setSlugEdited(true);
+    setDirty(false);
   }
 
   async function save(event: FormEvent) {
     event.preventDefault();
+    if (
+      selectedItem?.status === "published" &&
+      form.slug !== selectedItem.slug &&
+      !window.confirm(
+        `This entry is published at /${selectedItem.category}/${selectedItem.slug}. Changing the address breaks existing links and citations. Continue?`,
+      )
+    ) {
+      return;
+    }
     setSaving(true);
     setMessage("");
     setError("");
@@ -128,8 +167,9 @@ export function AdminClient() {
       const data = await response.json() as { item?: Item; error?: string };
       if (!response.ok || !data.item) throw new Error(data.error || "Could not save.");
       setMessage(data.item.status === "published" ? "Published successfully." : "Draft saved.");
+      setDirty(false);
       await loadItems(data.item.id);
-      selectItem(data.item);
+      applyItem(data.item);
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : "Could not save.");
     } finally {
@@ -149,6 +189,7 @@ export function AdminClient() {
       const result = await response.json() as { key?: string; name?: string; error?: string };
       if (!response.ok || !result.key) throw new Error(result.error || "Could not upload the PDF.");
       setForm((current) => ({ ...current, documentKey: result.key!, documentName: result.name ?? file.name }));
+      setDirty(true);
       setMessage("PDF uploaded. Save the entry to attach it.");
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : "Could not upload the PDF.");
@@ -165,7 +206,7 @@ export function AdminClient() {
       const response = await fetch(`/api/admin/content/${selectedItem.id}`, { method: "DELETE" });
       const data = await response.json() as { error?: string };
       if (!response.ok) throw new Error(data.error || "Could not delete the entry.");
-      startNew();
+      startNew(true);
       await loadItems();
       setMessage("Entry deleted.");
     } catch (caught) {
@@ -177,6 +218,16 @@ export function AdminClient() {
 
   function set<K extends keyof FormState>(key: K, value: FormState[K]) {
     setForm((current) => ({ ...current, [key]: value }));
+    setDirty(true);
+  }
+
+  function setTitle(title: string) {
+    setForm((current) => ({
+      ...current,
+      title,
+      slug: slugEdited ? current.slug : slugify(title),
+    }));
+    setDirty(true);
   }
 
   function toggleTag(tag: string) {
@@ -196,7 +247,7 @@ export function AdminClient() {
   return (
     <div className="editor-grid">
       <aside className="content-index" aria-label="Content entries">
-        <button className="admin-button primary" type="button" onClick={startNew}>+ New entry</button>
+        <button className="admin-button primary" type="button" onClick={() => startNew()}>+ New entry</button>
         <div className="content-index-list">
           {loading && <p className="admin-muted">Loading…</p>}
           {!loading && items.length === 0 && <p className="admin-muted">No entries yet. Create the first one.</p>}
@@ -222,6 +273,16 @@ export function AdminClient() {
             <h2>{form.title || "Untitled"}</h2>
           </div>
           <div className="editor-actions">
+            {selectedItem && (
+              <a
+                className="text-link"
+                href={`/${selectedItem.category}/${selectedItem.slug}`}
+                rel="noreferrer"
+                target="_blank"
+              >
+                {selectedItem.status === "published" ? "View ↗" : "Preview draft ↗"}
+              </a>
+            )}
             {selectedId && <button className="admin-button danger" type="button" onClick={remove}>Delete</button>}
             <button className="admin-button primary" disabled={saving} type="submit">
               {saving ? "Saving…" : form.status === "published" ? "Save & publish" : "Save draft"}
@@ -284,10 +345,10 @@ export function AdminClient() {
         </div>
 
         <label>Title
-          <input required value={form.title} onChange={(event) => set("title", event.target.value)} placeholder="Exact title of the paper or essay" />
+          <input required value={form.title} onChange={(event) => setTitle(event.target.value)} placeholder="Exact title of the paper or essay" />
         </label>
         <label>Page address
-          <div className="slug-input"><span>/{form.category}/</span><input value={form.slug} onChange={(event) => set("slug", event.target.value)} placeholder="generated-from-title" /></div>
+          <div className="slug-input"><span>/{form.category}/</span><input value={form.slug} onChange={(event) => { setSlugEdited(true); set("slug", event.target.value); }} placeholder="generated-from-title" /></div>
         </label>
         <label>Short summary
           <textarea rows={3} value={form.summary} onChange={(event) => set("summary", event.target.value)} placeholder="Two or three sentences for the listing and homepage." />
@@ -295,6 +356,15 @@ export function AdminClient() {
         <label>Full text / abstract
           <textarea className="body-editor" rows={14} value={form.body} onChange={(event) => set("body", event.target.value)} placeholder="Paste the abstract or full essay here. Paragraph breaks are preserved." />
         </label>
+
+        <div className="form-row two-columns">
+          <label>Status line — English (optional)
+            <input maxLength={80} value={form.displayStatusEn ?? ""} onChange={(event) => set("displayStatusEn", event.target.value)} placeholder="e.g. Submitted · Decision pending" />
+          </label>
+          <label>Status line — Spanish (optional)
+            <input maxLength={80} value={form.displayStatusEs ?? ""} onChange={(event) => set("displayStatusEs", event.target.value)} placeholder="p. ej. Enviado · Decisión pendiente" />
+          </label>
+        </div>
 
         <div className="form-row three-columns">
           <label>Publication / venue

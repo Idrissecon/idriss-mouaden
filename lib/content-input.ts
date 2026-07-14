@@ -12,6 +12,8 @@ export type ContentInput = {
   externalUrl: string | null;
   documentKey: string | null;
   documentName: string | null;
+  displayStatusEn: string | null;
+  displayStatusEs: string | null;
   tags: string[];
 };
 
@@ -30,6 +32,8 @@ export function contentInputToRow(input: ContentInput) {
     external_url: input.externalUrl,
     document_key: input.documentKey,
     document_name: input.documentName,
+    display_status_en: input.displayStatusEn,
+    display_status_es: input.displayStatusEs,
     tags: input.tags,
   };
 }
@@ -74,6 +78,8 @@ export function parseContentInput(value: unknown): ContentInput {
     externalUrl,
     documentKey: nullableText(input.documentKey),
     documentName: nullableText(input.documentName),
+    displayStatusEn: nullableText(input.displayStatusEn)?.slice(0, 80) ?? null,
+    displayStatusEs: nullableText(input.displayStatusEs)?.slice(0, 80) ?? null,
     tags,
   };
 }
@@ -96,7 +102,7 @@ function nullableText(value: unknown) {
   return result || null;
 }
 
-function slugify(value: string) {
+export function slugify(value: string) {
   return value
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")

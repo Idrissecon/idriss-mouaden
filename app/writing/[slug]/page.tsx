@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ContentDetail } from "@/app/components/content-detail";
 import { JsonLd } from "@/app/components/json-ld";
-import { getPublishedContentBySlug } from "@/lib/content";
+import { getViewableContentBySlug } from "@/lib/content";
 import { getLocale } from "@/lib/locale";
 import { contentMetadata, contentStructuredData } from "@/lib/seo";
 
@@ -11,13 +11,13 @@ export const dynamic = "force-dynamic";
 type PageProps = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const item = await getPublishedContentBySlug("writing", (await params).slug);
+  const item = await getViewableContentBySlug("writing", (await params).slug);
   return item ? contentMetadata(item) : {};
 }
 
 export default async function WritingEntryPage({ params }: PageProps) {
   const [item, locale] = await Promise.all([
-    getPublishedContentBySlug("writing", (await params).slug),
+    getViewableContentBySlug("writing", (await params).slug),
     getLocale(),
   ]);
   if (!item) notFound();

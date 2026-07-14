@@ -105,6 +105,7 @@ const translations = {
       writingCategory: "ensayo",
       openFigure: "Abrir la figura 1 a resolución completa",
       nationFigureAlt: "Mapa de la Confederación Germánica y sus Estados miembros entre 1815 y 1866",
+      draftNotice: "Borrador — esta página solo es visible para ti.",
     },
     report: {
       fullReport: "Informe completo",
@@ -238,6 +239,7 @@ const translations = {
       writingCategory: "writing",
       openFigure: "Open Figure 1 at full resolution",
       nationFigureAlt: "Map of the German Confederation and its constituent states from 1815 to 1866",
+      draftNotice: "Draft — this page is only visible to you.",
     },
     report: {
       fullReport: "Full report",

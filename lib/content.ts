@@ -49,6 +49,23 @@ export const getPublishedContentBySlug = cache(async function getPublishedConten
   return toContentItem(data as ContentRow);
 });
 
+// Row Level Security only exposes drafts to the signed-in owner, so this
+// returns published content for visitors and drafts for the owner.
+export const getViewableContentBySlug = cache(async function getViewableContentBySlug(
+  category: "research" | "writing",
+  slug: string,
+): Promise<PublicContentItem | null> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("content_items")
+    .select("*")
+    .eq("category", category)
+    .eq("slug", slug)
+    .maybeSingle();
+  if (error || !data) return null;
+  return toContentItem(data as ContentRow);
+});
+
 export { contentPath as contentHref } from "@/lib/seo";
 
 export function contentMeta(item: ContentItem) {
@@ -68,7 +85,14 @@ const displayStatusBySlug: Record<Locale, Record<string, string> & { default: st
   },
 };
 
-export function contentDisplayStatus(item: Pick<ContentItem, "slug">, locale: Locale = "en") {
+export function contentDisplayStatus(
+  item: Pick<ContentItem, "slug" | "displayStatusEn" | "displayStatusEs">,
+  locale: Locale = "en",
+) {
+  const fromCms = locale === "es"
+    ? item.displayStatusEs ?? item.displayStatusEn
+    : item.displayStatusEn;
+  if (fromCms) return fromCms;
   const statuses = displayStatusBySlug[locale];
   return statuses[item.slug] ?? statuses.default;
 }
