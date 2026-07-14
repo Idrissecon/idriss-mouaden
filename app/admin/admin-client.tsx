@@ -161,17 +161,18 @@ export function AdminClient() {
     if (!selectedItem || !window.confirm(`Delete “${selectedItem.title}”? This cannot be undone.`)) return;
     setSaving(true);
     setError("");
-    const response = await fetch(`/api/admin/content/${selectedItem.id}`, { method: "DELETE" });
-    const data = await response.json() as { error?: string };
-    if (!response.ok) {
-      setError(data.error || "Could not delete the entry.");
+    try {
+      const response = await fetch(`/api/admin/content/${selectedItem.id}`, { method: "DELETE" });
+      const data = await response.json() as { error?: string };
+      if (!response.ok) throw new Error(data.error || "Could not delete the entry.");
+      startNew();
+      await loadItems();
+      setMessage("Entry deleted.");
+    } catch (caught) {
+      setError(caught instanceof Error ? caught.message : "Could not delete the entry.");
+    } finally {
       setSaving(false);
-      return;
     }
-    startNew();
-    await loadItems();
-    setMessage("Entry deleted.");
-    setSaving(false);
   }
 
   function set<K extends keyof FormState>(key: K, value: FormState[K]) {

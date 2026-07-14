@@ -1,5 +1,5 @@
 import { requireOwnerResponse } from "@/lib/admin-auth";
-import { contentInputToRow, parseContentInput } from "@/lib/content-input";
+import { contentApiError as apiError, contentInputToRow, parseContentInput } from "@/lib/content-input";
 import { toContentItem, type ContentRow } from "@/lib/content-types";
 import { createClient } from "@/lib/supabase/server";
 
@@ -34,13 +34,4 @@ export async function POST(request: Request) {
   } catch (error) {
     return apiError(error instanceof Error ? error.message : "No se pudo guardar el contenido.");
   }
-}
-
-function apiError(message: string) {
-  const conflict = message.includes("duplicate key") || message.includes("content_items_slug_key");
-  const validation = message.includes("obligatorio") || message.includes("enlace externo");
-  return Response.json(
-    { error: conflict ? "Ya existe una entrada con esa URL. Cambia el slug." : message },
-    { status: conflict ? 409 : validation ? 400 : 500 },
-  );
 }

@@ -32,12 +32,12 @@ export async function servePublicationDocument(
 function documentHeaders(filename: string) {
   return {
     "cache-control": "public, max-age=3600, s-maxage=86400",
-    "content-disposition": `inline; filename="${safeFilename(filename)}"`,
+    "content-disposition": `inline; filename="${safePdfFilename(filename)}"`,
     "content-type": "application/pdf",
     "x-robots-tag": "index, follow",
   };
 }
 
-function safeFilename(value: string) {
-  return value.replace(/[^a-zA-Z0-9._ -]/g, "_").slice(0, 180) || "paper.pdf";
+export function safePdfFilename(value: string, fallback = "paper.pdf") {
+  return value.replace(/[^a-zA-Z0-9._ -]/g, "_").slice(0, 180) || fallback;
 }

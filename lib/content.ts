@@ -1,13 +1,15 @@
+import { cache } from "react";
 import { createClient } from "@/lib/supabase/server";
 import {
   toContentItem,
   type ContentItem,
   type ContentRow,
 } from "@/lib/content-types";
+import type { Locale } from "@/lib/i18n";
 
 export type PublicContentItem = ContentItem;
 
-export async function listPublishedContent(
+export const listPublishedContent = cache(async function listPublishedContent(
   category?: "research" | "writing",
   limit = 50,
 ): Promise<PublicContentItem[]> {
@@ -29,9 +31,9 @@ export async function listPublishedContent(
     return [];
   }
   return ((data ?? []) as ContentRow[]).map(toContentItem);
-}
+});
 
-export async function getPublishedContentBySlug(
+export const getPublishedContentBySlug = cache(async function getPublishedContentBySlug(
   category: "research" | "writing",
   slug: string,
 ): Promise<PublicContentItem | null> {
@@ -45,22 +47,28 @@ export async function getPublishedContentBySlug(
     .maybeSingle();
   if (error || !data) return null;
   return toContentItem(data as ContentRow);
-}
+});
 
-export function contentHref(item: Pick<ContentItem, "category" | "slug">) {
-  return `/${item.category}/${item.slug}`;
-}
+export { contentPath as contentHref } from "@/lib/seo";
 
 export function contentMeta(item: ContentItem) {
   return [item.venue, ...item.tags, item.year?.toString()].filter(Boolean).join(" · ");
 }
 
-const displayStatusBySlug: Record<string, string> = {
-  "cashlessness-and-monetary-discretion": "Shortlisted · Full text forthcoming",
-  "the-end-of-exit": "Submitted · Decision pending",
-  "nations-states-and-the-free-evolution-of-social-order": "Published",
+const displayStatusBySlug: Record<Locale, Record<string, string> & { default: string }> = {
+  en: {
+    "cashlessness-and-monetary-discretion": "Shortlisted · Full text forthcoming",
+    "the-end-of-exit": "Submitted · Decision pending",
+    default: "Published",
+  },
+  es: {
+    "cashlessness-and-monetary-discretion": "Preseleccionado · Texto completo próximamente",
+    "the-end-of-exit": "Enviado · Decisión pendiente",
+    default: "Publicado",
+  },
 };
 
-export function contentDisplayStatus(item: Pick<ContentItem, "slug">) {
-  return displayStatusBySlug[item.slug] ?? "Published";
+export function contentDisplayStatus(item: Pick<ContentItem, "slug">, locale: Locale = "en") {
+  const statuses = displayStatusBySlug[locale];
+  return statuses[item.slug] ?? statuses.default;
 }

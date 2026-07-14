@@ -26,7 +26,7 @@ export function ContentDetail({ item, locale }: { item: PublicContentItem; local
           {item.category === "research" ? m.content.researchCategory : m.content.writingCategory}
           {meta ? ` · ${meta}` : ""}
         </p>
-        <p className="publication-status">{contentDisplayStatus(item)}</p>
+        <p className="publication-status">{contentDisplayStatus(item, locale)}</p>
         <h1>{item.title}</h1>
         {item.summary && <p className="publication-summary">{item.summary}</p>}
         <div className="publication-links">

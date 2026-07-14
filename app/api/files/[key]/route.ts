@@ -1,3 +1,4 @@
+import { safePdfFilename } from "@/lib/serve-publication-document";
 import { createClient } from "@/lib/supabase/server";
 
 type RouteContext = { params: Promise<{ key: string }> };
@@ -16,7 +17,7 @@ export async function GET(_request: Request, context: RouteContext) {
 
   const { data, error } = await supabase.storage.from("documents").download(key);
   if (error || !data) return new Response("Not found", { status: 404 });
-  const filename = safeFilename(record.document_name ?? "document.pdf");
+  const filename = safePdfFilename(record.document_name ?? "document.pdf", "document.pdf");
   return new Response(data, {
     headers: {
       "content-type": "application/pdf",
@@ -24,8 +25,4 @@ export async function GET(_request: Request, context: RouteContext) {
       "cache-control": "public, max-age=3600",
     },
   });
-}
-
-function safeFilename(value: string) {
-  return value.replace(/[^a-zA-Z0-9._ -]/g, "_").slice(0, 180) || "document.pdf";
 }

@@ -1,5 +1,5 @@
 import { requireOwnerResponse } from "@/lib/admin-auth";
-import { contentInputToRow, parseContentInput } from "@/lib/content-input";
+import { contentApiError as apiError, contentInputToRow, parseContentInput } from "@/lib/content-input";
 import { toContentItem, type ContentRow } from "@/lib/content-types";
 import { createClient } from "@/lib/supabase/server";
 
@@ -59,13 +59,4 @@ export async function DELETE(_request: Request, context: RouteContext) {
   if (!count) return Response.json({ error: "Entrada no encontrada." }, { status: 404 });
   if (item?.document_key) await supabase.storage.from("documents").remove([item.document_key]);
   return Response.json({ ok: true });
-}
-
-function apiError(message: string) {
-  const conflict = message.includes("duplicate key") || message.includes("content_items_slug_key");
-  const validation = message.includes("obligatorio") || message.includes("enlace externo");
-  return Response.json(
-    { error: conflict ? "Ya existe una entrada con esa URL. Cambia el slug." : message },
-    { status: conflict ? 409 : validation ? 400 : 500 },
-  );
 }

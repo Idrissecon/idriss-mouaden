@@ -22,16 +22,19 @@ export function SiteHeader({ locale }: { locale: Locale }) {
         Idriss Mouaden
       </Link>
       <nav className="primary-nav" aria-label={m.nav.primaryAria}>
-        {navigation.map((item) => (
-          <Link
-            aria-current={pathname === item.href ? "page" : undefined}
-            className={pathname === item.href ? "is-current" : undefined}
-            href={item.href}
-            key={item.href}
-          >
-            {item.label}
-          </Link>
-        ))}
+        {navigation.map((item) => {
+          const isCurrent = pathname === item.href || pathname.startsWith(`${item.href}/`);
+          return (
+            <Link
+              aria-current={isCurrent ? "page" : undefined}
+              className={isCurrent ? "is-current" : undefined}
+              href={item.href}
+              key={item.href}
+            >
+              {item.label}
+            </Link>
+          );
+        })}
         <LanguageSwitcher label={m.nav.language} locale={locale} />
       </nav>
     </header>

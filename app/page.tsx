@@ -111,7 +111,7 @@ export default async function Home() {
                 <p className="item-meta">{contentMeta(item) || m.common.essay}</p>
                 <h3><Link href={contentHref(item)}>{item.title}</Link></h3>
               </div>
-              <p className="writing-note">{contentDisplayStatus(item)}</p>
+              <p className="writing-note">{contentDisplayStatus(item, locale)}</p>
             </article>
           ))}
           <Link className="text-link section-link" href="/writing">

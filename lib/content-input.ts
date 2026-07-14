@@ -78,6 +78,15 @@ export function parseContentInput(value: unknown): ContentInput {
   };
 }
 
+export function contentApiError(message: string) {
+  const conflict = message.includes("duplicate key") || message.includes("content_items_slug_key");
+  const validation = message.includes("obligatorio") || message.includes("enlace externo");
+  return Response.json(
+    { error: conflict ? "Ya existe una entrada con esa URL. Cambia el slug." : message },
+    { status: conflict ? 409 : validation ? 400 : 500 },
+  );
+}
+
 function cleanText(value: unknown) {
   return typeof value === "string" ? value.trim() : "";
 }

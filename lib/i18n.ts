@@ -117,6 +117,11 @@ const translations = {
       transcript: "Transcripción de texto accesible",
       transcriptNote: "La transcripción conserva el texto y el contenido numérico. Utiliza las páginas del informe para consultar la disposición original de tablas y gráficos.",
     },
+    notFound: {
+      title: "Página no encontrada",
+      description: "La página que buscas no existe o se ha movido.",
+      backHome: "Volver al inicio",
+    },
     footer: {
       heading: "Investigación, ensayos y trabajos académicos seleccionados.",
       aria: "Navegación del pie de página",
@@ -244,6 +249,11 @@ const translations = {
       page: "Page",
       transcript: "Accessible text transcript",
       transcriptNote: "The transcript preserves the wording and numerical content. Use the report pages above for the original table and chart layout.",
+    },
+    notFound: {
+      title: "Page not found",
+      description: "The page you are looking for does not exist or has moved.",
+      backHome: "Back to home",
     },
     footer: {
       heading: "Research, writing, and selected academic work.",
