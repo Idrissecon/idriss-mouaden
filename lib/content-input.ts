@@ -12,9 +12,6 @@ export type ContentInput = {
   externalUrl: string | null;
   documentKey: string | null;
   documentName: string | null;
-  documentFormat: "standard" | "paginated-report";
-  reportPageCount: number;
-  reportPagesPrefix: string | null;
   displayStatusEn: string | null;
   displayStatusEs: string | null;
   tags: string[];
@@ -35,9 +32,6 @@ export function contentInputToRow(input: ContentInput) {
     external_url: input.externalUrl,
     document_key: input.documentKey,
     document_name: input.documentName,
-    document_format: input.documentFormat,
-    report_page_count: input.reportPageCount,
-    report_pages_prefix: input.reportPagesPrefix,
     display_status_en: input.displayStatusEn,
     display_status_es: input.displayStatusEs,
     tags: input.tags,
@@ -57,13 +51,6 @@ export function parseContentInput(value: unknown): ContentInput {
   const rawYear = Number(input.year);
   const year = Number.isInteger(rawYear) && rawYear >= 1900 && rawYear <= 2200 ? rawYear : null;
   const externalUrl = nullableText(input.externalUrl);
-  const documentFormat = input.documentFormat === "paginated-report"
-    ? "paginated-report"
-    : "standard";
-  const rawReportPageCount = Number(input.reportPageCount);
-  const reportPageCount = documentFormat === "paginated-report" && Number.isInteger(rawReportPageCount)
-    ? Math.min(Math.max(rawReportPageCount, 0), 500)
-    : 0;
   const tags = Array.isArray(input.tags)
     ? input.tags.reduce<string[]>((result, value) => {
         const tag = cleanText(value).replace(/\s+/g, " ").slice(0, 40);
@@ -91,11 +78,6 @@ export function parseContentInput(value: unknown): ContentInput {
     externalUrl,
     documentKey: nullableText(input.documentKey),
     documentName: nullableText(input.documentName),
-    documentFormat,
-    reportPageCount,
-    reportPagesPrefix: documentFormat === "paginated-report"
-      ? nullableText(input.reportPagesPrefix)
-      : null,
     displayStatusEn: nullableText(input.displayStatusEn)?.slice(0, 80) ?? null,
     displayStatusEs: nullableText(input.displayStatusEs)?.slice(0, 80) ?? null,
     tags,

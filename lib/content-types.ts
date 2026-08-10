@@ -13,9 +13,6 @@ export type ContentItem = {
   externalUrl: string | null;
   documentKey: string | null;
   documentName: string | null;
-  documentFormat: "standard" | "paginated-report";
-  reportPageCount: number;
-  reportPagesPrefix: string | null;
   displayStatusEn: string | null;
   displayStatusEs: string | null;
   tags: string[];
@@ -38,9 +35,6 @@ export type ContentRow = {
   external_url: string | null;
   document_key: string | null;
   document_name: string | null;
-  document_format: "standard" | "paginated-report";
-  report_page_count: number;
-  report_pages_prefix: string | null;
   display_status_en: string | null;
   display_status_es: string | null;
   tags: string[] | null;
@@ -64,9 +58,6 @@ export function toContentItem(row: ContentRow): ContentItem {
     externalUrl: row.external_url,
     documentKey: row.document_key,
     documentName: row.document_name,
-    documentFormat: row.document_format ?? "standard",
-    reportPageCount: row.report_page_count ?? 0,
-    reportPagesPrefix: row.report_pages_prefix ?? null,
     displayStatusEn: row.display_status_en ?? null,
     displayStatusEs: row.display_status_es ?? null,
     tags: row.tags ?? [],
