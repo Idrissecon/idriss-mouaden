@@ -2,6 +2,7 @@
 
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { slugify } from "@/lib/content-input";
+import { createClient as createBrowserSupabaseClient } from "@/lib/supabase/client";
 
 type Item = {
   id: number;
@@ -196,22 +197,32 @@ export function AdminClient() {
 
   async function upload(file: File | undefined) {
     if (!file) return;
+    if (file.type !== "application/pdf" && !file.name.toLowerCase().endsWith(".pdf")) {
+      setError("Solo se admiten archivos PDF.");
+      return;
+    }
+    if (file.size > 20 * 1024 * 1024) {
+      setError("El PDF no puede superar los 20 MB.");
+      return;
+    }
     setUploading(true);
     setMessage("");
     setError("");
     try {
-      const data = new FormData();
-      data.append("file", file);
-      const response = await fetch("/api/admin/upload", { method: "POST", body: data });
-      const result = await response.json() as { key?: string; name?: string; error?: string };
-      if (!response.ok || !result.key) throw new Error(result.error || "Could not upload the PDF.");
+      const supabase = createBrowserSupabaseClient();
+      const key = `${crypto.randomUUID()}.pdf`;
+      const { error: uploadError } = await supabase.storage.from("documents").upload(key, file, {
+        contentType: "application/pdf",
+        upsert: false,
+      });
+      if (uploadError) throw new Error(uploadError.message || "Could not upload the PDF.");
       const report = form.documentFormat === "paginated-report"
-        ? await processReportPdf(file, result.key)
+        ? await processReportPdf(file, key, supabase)
         : null;
       setForm((current) => ({
         ...current,
-        documentKey: result.key!,
-        documentName: result.name ?? file.name,
+        documentKey: key,
+        documentName: file.name,
         reportPageCount: report?.pageCount ?? 0,
         reportPagesPrefix: report?.prefix ?? null,
         body: current.body || report?.transcript || "",
@@ -228,7 +239,11 @@ export function AdminClient() {
     }
   }
 
-  async function processReportPdf(file: File, documentKey: string) {
+  async function processReportPdf(
+    file: File,
+    documentKey: string,
+    supabase: ReturnType<typeof createBrowserSupabaseClient>,
+  ) {
     const pdfjs = await import("pdfjs-dist");
     pdfjs.GlobalWorkerOptions.workerSrc = new URL(
       "pdfjs-dist/build/pdf.worker.min.mjs",
@@ -238,7 +253,6 @@ export function AdminClient() {
     const pageCount = pdf.numPages;
     if (pageCount > 500) throw new Error("El informe no puede superar 500 páginas.");
     const transcript: string[] = [];
-    let prefix = "";
 
     for (let pageNumber = 1; pageNumber <= pageCount; pageNumber += 1) {
       setProcessingPage(pageNumber);
@@ -259,20 +273,20 @@ export function AdminClient() {
         );
       });
 
-      const pageUpload = new FormData();
-      pageUpload.append("file", image, `page-${String(pageNumber).padStart(4, "0")}.jpg`);
-      pageUpload.append("documentKey", documentKey);
-      pageUpload.append("page", String(pageNumber));
-      const response = await fetch("/api/admin/upload/report-page", {
-        method: "POST",
-        body: pageUpload,
-      });
-      const result = await response.json() as { prefix?: string; error?: string };
-      if (!response.ok || !result.prefix) {
-        throw new Error(result.error || `No se pudo subir la página ${pageNumber}.`);
+      const prefix = documentKey.slice(0, -4);
+      const pageKey = `${prefix}/page-${String(pageNumber).padStart(4, "0")}.jpg`;
+      const { error: pageUploadError } = await supabase.storage.from("report-pages").upload(
+        pageKey,
+        image,
+        {
+          cacheControl: "31536000",
+          contentType: "image/jpeg",
+          upsert: true,
+        },
+      );
+      if (pageUploadError) {
+        throw new Error(pageUploadError.message || `No se pudo subir la página ${pageNumber}.`);
       }
-      prefix = result.prefix;
-
       const text = await page.getTextContent();
       const pageText = text.items
         .map((item) => "str" in item ? item.str : "")
@@ -283,7 +297,11 @@ export function AdminClient() {
       page.cleanup();
     }
     await pdf.destroy();
-    return { prefix, pageCount, transcript: transcript.join("\n\n") };
+    return {
+      prefix: documentKey.slice(0, -4),
+      pageCount,
+      transcript: transcript.join("\n\n"),
+    };
   }
 
   async function remove() {
