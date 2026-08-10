@@ -208,14 +208,16 @@ export function AdminClient() {
     setUploading(true);
     setMessage("");
     setError("");
+    const supabase = createBrowserSupabaseClient();
+    let uploadedKey: string | null = null;
     try {
-      const supabase = createBrowserSupabaseClient();
       const key = `${crypto.randomUUID()}.pdf`;
       const { error: uploadError } = await supabase.storage.from("documents").upload(key, file, {
         contentType: "application/pdf",
         upsert: false,
       });
       if (uploadError) throw new Error(uploadError.message || "Could not upload the PDF.");
+      uploadedKey = key;
       const report = form.documentFormat === "paginated-report"
         ? await processReportPdf(file, key, supabase)
         : null;
@@ -232,11 +234,26 @@ export function AdminClient() {
         ? `PDF procesado: ${report.pageCount} páginas y texto SEO extraído. Guarda la entrada para publicarlo.`
         : "PDF uploaded. Save the entry to attach it.");
     } catch (caught) {
+      if (uploadedKey) await removeUploadedAssets(supabase, uploadedKey);
       setError(caught instanceof Error ? caught.message : "Could not upload the PDF.");
     } finally {
       setUploading(false);
       setProcessingPage(null);
     }
+  }
+
+  async function removeUploadedAssets(
+    supabase: ReturnType<typeof createBrowserSupabaseClient>,
+    documentKey: string,
+  ) {
+    const prefix = documentKey.slice(0, -4);
+    const { data: pages } = await supabase.storage.from("report-pages").list(prefix, { limit: 500 });
+    if (pages?.length) {
+      await supabase.storage.from("report-pages").remove(
+        pages.map((page) => `${prefix}/${page.name}`),
+      );
+    }
+    await supabase.storage.from("documents").remove([documentKey]);
   }
 
   async function processReportPdf(
