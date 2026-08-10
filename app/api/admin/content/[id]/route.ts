@@ -15,7 +15,7 @@ export async function PUT(request: Request, context: RouteContext) {
     const supabase = await createClient();
     const { data: previous } = await supabase
       .from("content_items")
-      .select("document_key")
+      .select("document_key,report_pages_prefix")
       .eq("id", id)
       .maybeSingle();
     const input = {
@@ -33,6 +33,12 @@ export async function PUT(request: Request, context: RouteContext) {
     if (previous?.document_key && previous.document_key !== item.documentKey) {
       await supabase.storage.from("documents").remove([previous.document_key]);
     }
+    if (
+      previous?.report_pages_prefix &&
+      previous.report_pages_prefix !== item.reportPagesPrefix
+    ) {
+      await removeReportPages(supabase, previous.report_pages_prefix);
+    }
     return Response.json({ item });
   } catch (error) {
     return apiError(error instanceof Error ? error.message : "No se pudo modificar el contenido.");
@@ -48,7 +54,7 @@ export async function DELETE(_request: Request, context: RouteContext) {
   const supabase = await createClient();
   const { data: item } = await supabase
     .from("content_items")
-    .select("document_key")
+    .select("document_key,report_pages_prefix")
     .eq("id", id)
     .maybeSingle();
   const { error, count } = await supabase
@@ -58,5 +64,16 @@ export async function DELETE(_request: Request, context: RouteContext) {
   if (error) return apiError(error.message);
   if (!count) return Response.json({ error: "Entrada no encontrada." }, { status: 404 });
   if (item?.document_key) await supabase.storage.from("documents").remove([item.document_key]);
+  if (item?.report_pages_prefix) await removeReportPages(supabase, item.report_pages_prefix);
   return Response.json({ ok: true });
+}
+
+async function removeReportPages(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  prefix: string,
+) {
+  const { data } = await supabase.storage.from("report-pages").list(prefix, { limit: 500 });
+  if (data?.length) {
+    await supabase.storage.from("report-pages").remove(data.map((file) => `${prefix}/${file.name}`));
+  }
 }

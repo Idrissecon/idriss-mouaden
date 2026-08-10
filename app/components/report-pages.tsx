@@ -17,8 +17,17 @@ const pages = [
   "Source tracker",
 ] as const;
 
-export function ReportPages({ locale }: { locale: Locale }) {
+type PaginatedReport = {
+  id: number;
+  pageCount: number;
+  title: string;
+};
+
+export function ReportPages({ locale, report }: { locale: Locale; report?: PaginatedReport }) {
   const m = messages(locale);
+  const pageTitles = report
+    ? Array.from({ length: report.pageCount }, (_, index) => `${report.title} — ${m.report.page} ${index + 1}`)
+    : pages;
   return (
     <section className="report-pages" aria-labelledby="report-pages-heading">
       <header className="report-pages-heading">
@@ -29,16 +38,17 @@ export function ReportPages({ locale }: { locale: Locale }) {
         </div>
       </header>
       <nav className="report-page-index" aria-label={m.report.pagesAria}>
-        {pages.map((_, index) => {
+        {pageTitles.map((_, index) => {
           const page = index + 1;
           return <a href={`#report-page-${page}`} key={page}>{page}</a>;
         })}
       </nav>
       <ol className="report-page-list">
-        {pages.map((title, index) => {
+        {pageTitles.map((title, index) => {
           const page = index + 1;
-          const filename = `page-${String(page).padStart(2, "0")}.jpg`;
-          const source = `/reports/syf/${filename}`;
+          const source = report
+            ? `/api/report-pages/${report.id}/page-${String(page).padStart(4, "0")}.jpg`
+            : `/reports/syf/page-${String(page).padStart(2, "0")}.jpg`;
           return (
             <li className="report-page" id={`report-page-${page}`} key={page}>
               <figure>
@@ -49,6 +59,7 @@ export function ReportPages({ locale }: { locale: Locale }) {
                     priority={page === 1}
                     sizes="(max-width: 900px) 94vw, 960px"
                     src={source}
+                    unoptimized={Boolean(report)}
                     width={1224}
                   />
                 </a>

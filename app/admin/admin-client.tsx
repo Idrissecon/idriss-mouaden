@@ -18,6 +18,9 @@ type Item = {
   externalUrl: string | null;
   documentKey: string | null;
   documentName: string | null;
+  documentFormat: "standard" | "paginated-report";
+  reportPageCount: number;
+  reportPagesPrefix: string | null;
   displayStatusEn: string | null;
   displayStatusEs: string | null;
   tags: string[];
@@ -40,6 +43,9 @@ const emptyForm: FormState = {
   externalUrl: "",
   documentKey: null,
   documentName: null,
+  documentFormat: "standard",
+  reportPageCount: 0,
+  reportPagesPrefix: null,
   displayStatusEn: "",
   displayStatusEs: "",
   tags: [],
@@ -52,6 +58,7 @@ export function AdminClient() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [processingPage, setProcessingPage] = useState<number | null>(null);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [newTag, setNewTag] = useState("");
@@ -130,6 +137,9 @@ export function AdminClient() {
       externalUrl: item.externalUrl ?? "",
       documentKey: item.documentKey,
       documentName: item.documentName,
+      documentFormat: item.documentFormat,
+      reportPageCount: item.reportPageCount,
+      reportPagesPrefix: item.reportPagesPrefix,
       displayStatusEn: item.displayStatusEn ?? "",
       displayStatusEs: item.displayStatusEs ?? "",
       tags: item.tags,
@@ -143,6 +153,13 @@ export function AdminClient() {
 
   async function save(event: FormEvent) {
     event.preventDefault();
+    if (
+      form.documentFormat === "paginated-report" &&
+      (!form.reportPagesPrefix || form.reportPageCount < 1)
+    ) {
+      setError("Activa el formato antes de subir el PDF, o reemplaza el PDF para generar sus páginas.");
+      return;
+    }
     if (
       selectedItem?.status === "published" &&
       form.slug !== selectedItem.slug &&
@@ -188,14 +205,85 @@ export function AdminClient() {
       const response = await fetch("/api/admin/upload", { method: "POST", body: data });
       const result = await response.json() as { key?: string; name?: string; error?: string };
       if (!response.ok || !result.key) throw new Error(result.error || "Could not upload the PDF.");
-      setForm((current) => ({ ...current, documentKey: result.key!, documentName: result.name ?? file.name }));
+      const report = form.documentFormat === "paginated-report"
+        ? await processReportPdf(file, result.key)
+        : null;
+      setForm((current) => ({
+        ...current,
+        documentKey: result.key!,
+        documentName: result.name ?? file.name,
+        reportPageCount: report?.pageCount ?? 0,
+        reportPagesPrefix: report?.prefix ?? null,
+        body: current.body || report?.transcript || "",
+      }));
       setDirty(true);
-      setMessage("PDF uploaded. Save the entry to attach it.");
+      setMessage(report
+        ? `PDF procesado: ${report.pageCount} páginas y texto SEO extraído. Guarda la entrada para publicarlo.`
+        : "PDF uploaded. Save the entry to attach it.");
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : "Could not upload the PDF.");
     } finally {
       setUploading(false);
+      setProcessingPage(null);
     }
+  }
+
+  async function processReportPdf(file: File, documentKey: string) {
+    const pdfjs = await import("pdfjs-dist");
+    pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+      "pdfjs-dist/build/pdf.worker.min.mjs",
+      import.meta.url,
+    ).toString();
+    const pdf = await pdfjs.getDocument({ data: await file.arrayBuffer() }).promise;
+    const pageCount = pdf.numPages;
+    if (pageCount > 500) throw new Error("El informe no puede superar 500 páginas.");
+    const transcript: string[] = [];
+    let prefix = "";
+
+    for (let pageNumber = 1; pageNumber <= pageCount; pageNumber += 1) {
+      setProcessingPage(pageNumber);
+      const page = await pdf.getPage(pageNumber);
+      const initialViewport = page.getViewport({ scale: 1 });
+      const viewport = page.getViewport({ scale: Math.max(1.5, 1800 / initialViewport.width) });
+      const canvas = document.createElement("canvas");
+      canvas.width = Math.ceil(viewport.width);
+      canvas.height = Math.ceil(viewport.height);
+      const context = canvas.getContext("2d", { alpha: false });
+      if (!context) throw new Error("No se pudo preparar el renderizado del informe.");
+      await page.render({ canvas, canvasContext: context, viewport }).promise;
+      const image = await new Promise<Blob>((resolve, reject) => {
+        canvas.toBlob(
+          (blob) => blob ? resolve(blob) : reject(new Error("No se pudo renderizar una página.")),
+          "image/jpeg",
+          0.92,
+        );
+      });
+
+      const pageUpload = new FormData();
+      pageUpload.append("file", image, `page-${String(pageNumber).padStart(4, "0")}.jpg`);
+      pageUpload.append("documentKey", documentKey);
+      pageUpload.append("page", String(pageNumber));
+      const response = await fetch("/api/admin/upload/report-page", {
+        method: "POST",
+        body: pageUpload,
+      });
+      const result = await response.json() as { prefix?: string; error?: string };
+      if (!response.ok || !result.prefix) {
+        throw new Error(result.error || `No se pudo subir la página ${pageNumber}.`);
+      }
+      prefix = result.prefix;
+
+      const text = await page.getTextContent();
+      const pageText = text.items
+        .map((item) => "str" in item ? item.str : "")
+        .join(" ")
+        .replace(/\s+/g, " ")
+        .trim();
+      if (pageText) transcript.push(`[Page ${pageNumber}]\n${pageText}`);
+      page.cleanup();
+    }
+    await pdf.destroy();
+    return { prefix, pageCount, transcript: transcript.join("\n\n") };
   }
 
   async function remove() {
@@ -378,11 +466,42 @@ export function AdminClient() {
           </label>
         </div>
 
+        <label>PDF presentation
+          <select
+            value={form.documentFormat}
+            onChange={(event) => {
+              const documentFormat = event.target.value as FormState["documentFormat"];
+              setForm((current) => ({
+                ...current,
+                documentFormat,
+                reportPageCount: documentFormat === "standard" ? 0 : current.reportPageCount,
+                reportPagesPrefix: documentFormat === "standard" ? null : current.reportPagesPrefix,
+              }));
+              setDirty(true);
+              if (documentFormat === "paginated-report" && form.documentKey) {
+                setMessage("Formato informe activado. Reemplaza el PDF para generar las hojas.");
+              }
+            }}
+          >
+            <option value="standard">Standard document</option>
+            <option value="paginated-report">Paginated report — pages + SEO text</option>
+          </select>
+        </label>
+
         <div className="document-panel">
           <div>
             <p className="detail-label">Document</p>
             <h3>{form.documentName || "No PDF attached"}</h3>
             <p>PDF only, up to 20 MB. It will open from the public entry.</p>
+            {form.documentFormat === "paginated-report" && (
+              <p>
+                {processingPage
+                  ? `Procesando página ${processingPage}…`
+                  : form.reportPageCount > 0
+                    ? `${form.reportPageCount} páginas preparadas.`
+                    : "Al subirlo se generarán las hojas y el texto para SEO."}
+              </p>
+            )}
           </div>
           <label className="admin-button file-button">
             {uploading ? "Uploading…" : form.documentKey ? "Replace PDF" : "Upload PDF"}

@@ -15,6 +15,10 @@ export function ContentDetail({ item, locale }: { item: PublicContentItem; local
       ? `/api/files/${encodeURIComponent(item.documentKey)}`
       : null;
   const isSynchronyReport = item.slug === "synchrony-financial-investment-report";
+  const isPaginatedReport = item.documentFormat === "paginated-report";
+  const showReportPages = isSynchronyReport || (
+    isPaginatedReport && item.reportPageCount > 0 && Boolean(item.reportPagesPrefix)
+  );
   const isNationStateEssay = item.slug === "nations-states-and-the-free-evolution-of-social-order";
   return (
     <main className="detail-page shell publication-page">
@@ -45,9 +49,20 @@ export function ContentDetail({ item, locale }: { item: PublicContentItem; local
           )}
         </div>
       </header>
-      {isSynchronyReport && <ReportPages locale={locale} />}
-      {item.body && isSynchronyReport && <ReportTranscript body={item.body} locale={locale} />}
-      {item.body && !isSynchronyReport && (
+      {showReportPages && (
+        <ReportPages
+          locale={locale}
+          report={isSynchronyReport ? undefined : {
+            id: item.id,
+            pageCount: item.reportPageCount,
+            title: item.title,
+          }}
+        />
+      )}
+      {item.body && (isSynchronyReport || isPaginatedReport) && (
+        <ReportTranscript body={item.body} locale={locale} />
+      )}
+      {item.body && !isSynchronyReport && !isPaginatedReport && (
         <article className="publication-body">
           <p className="detail-label">{m.common.text}</p>
           <StructuredText
