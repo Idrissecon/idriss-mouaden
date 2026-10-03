@@ -1,7 +1,7 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
 
-const sectionHeadings = new Set(["Conclusion", "Works Cited"]);
+const sectionHeadings = new Set(["Introduction", "Exit as the Constraint on Power", "The Internalization of Intervention", "Cashlessness and the Destruction of Monetary Exit", "Identity, Permissioned Markets, and Entrepreneurial Discovery", "The Dynamics of Cumulative Digital Intervention", "Conclusion", "Works Cited", "Bibliography", "Notes"]);
 
 type StructuredFigure = {
   alt: string;
@@ -16,7 +16,7 @@ export function StructuredText({ body, figure }: { body: string; figure?: Struct
     .split(/\n{2,}/)
     .map((block) => block.trim())
     .filter(Boolean);
-  const bibliographyIndex = blocks.indexOf("Works Cited");
+  const bibliographyIndex = blocks.findIndex((block) => block === "Works Cited" || block === "Bibliography");
 
   return (
     <div className="publication-prose">

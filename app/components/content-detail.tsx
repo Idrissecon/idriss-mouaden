@@ -15,6 +15,7 @@ export function ContentDetail({ item, locale }: { item: PublicContentItem; local
       ? `/api/files/${encodeURIComponent(item.documentKey)}`
       : null;
   const isSynchronyReport = item.slug === "synchrony-financial-investment-report";
+  const isEndOfExitEssay = item.slug === "the-end-of-exit";
   const isNationStateEssay = item.slug === "nations-states-and-the-free-evolution-of-social-order";
   return (
     <main className="detail-page shell publication-page">
@@ -58,6 +59,12 @@ export function ContentDetail({ item, locale }: { item: PublicContentItem; local
               openLabel: m.content.openFigure,
               src: "/images/nation-state/german-confederation-1815-1866.png",
               width: 960,
+            } : isEndOfExitEssay ? {
+              alt: "Ratchet effect in monetary policy discretion following removal of the zero lower bound",
+              height: 540,
+              openLabel: "Open Figure 1 at full resolution",
+              src: "/images/the-end-of-exit/ratchet-effect.png",
+              width: 780,
             } : undefined}
           />
         </article>
