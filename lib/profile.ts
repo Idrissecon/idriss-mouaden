@@ -1,9 +1,9 @@
 export const profile = {
-  location: "Spain",
-  role: "High school student and independent researcher",
+  location: "Córdoba, Spain",
+  role: "High-school student, independent researcher, and investment analyst",
   introduction:
-    "Economics student and independent researcher working on banking, financial systems, and monetary institutions.",
-  fields: ["Economics", "Banking & finance", "Political economy", "Mathematics"],
+    "High-school student, independent researcher, and investment analyst interested in banking, financial institutions, financial analysis, business strategy, and economics.",
+  fields: ["Banking & finance", "Financial analysis", "Business strategy", "Economics", "Political economy", "Mathematics"],
   education: {
     programme: "High school education",
     expected: 2028,
@@ -23,7 +23,7 @@ export const profile = {
     role: "Investment Analyst",
     startYear: 2026,
     description:
-      "Researches public companies and prepares investment proposals as an active member of the organisation.",
+      "Researches public companies, analyses financial statements and regulatory filings, and prepares investment proposals and reports.",
   },
   activities: [
     "Two provincial school debate competitions",

@@ -2,15 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { messages } from "@/lib/i18n";
 import { getLocale } from "@/lib/locale";
-import { profile } from "@/lib/profile";
 import { pageMetadata } from "@/lib/seo";
 
-const english = messages("en").about;
-export const metadata: Metadata = pageMetadata(
-  english.title,
-  english.description,
-  "/about",
-);
+export async function generateMetadata(): Promise<Metadata> {
+  const a = messages(await getLocale()).about;
+  return pageMetadata(a.title, a.description, "/about");
+}
 
 export default async function AboutPage() {
   const m = messages(await getLocale());
@@ -27,7 +24,7 @@ export default async function AboutPage() {
         <div>
           <h2 id="about-profile">{m.about.profileHeading}</h2>
           <p>{m.profile.introduction}</p>
-          <p>{m.about.interests}</p>
+          <Link className="text-link section-link" href="/experience">{m.about.experienceLink}</Link>
         </div>
       </section>
       <section className="detail-content" aria-labelledby="about-research">
@@ -37,18 +34,21 @@ export default async function AboutPage() {
           <p>{m.profile.currentResearchDescription}</p>
         </div>
       </section>
-      <section className="detail-content" aria-labelledby="about-links">
-        <p className="detail-label">{m.about.contact}</p>
+      <section className="detail-content" aria-labelledby="about-interests">
+        <p className="detail-label">{m.about.intellectualInterests}</p>
         <div>
-          <h2 id="about-links">{m.about.contactHeading}</h2>
-          <p>
-            <a className="text-link" href={`mailto:${profile.contactEmail}`}>{profile.contactEmail}</a>
-          </p>
-          <p>
-            <a className="text-link" href={profile.orcid} target="_blank" rel="me noreferrer">ORCID ↗</a>
-          </p>
+          <h2 id="about-interests">{m.about.intellectualInterests}</h2>
+          <p>{m.about.interests}</p>
         </div>
       </section>
+      <section className="detail-content" aria-labelledby="about-activities">
+        <p className="detail-label">{m.home.activities}</p>
+        <div>
+          <h2 id="about-activities">{m.about.activities}</h2>
+          <p>{m.about.activitiesDescription}</p>
+        </div>
+      </section>
+      <div id="about-links" />
     </main>
   );
 }

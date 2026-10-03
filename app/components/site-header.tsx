@@ -11,6 +11,7 @@ export function SiteHeader({ locale }: { locale: Locale }) {
   const m = messages(locale);
   const navigation = [
     { href: "/research", label: m.nav.research },
+    { href: "/experience", label: m.nav.experience },
     { href: "/writing", label: m.nav.writing },
     { href: "/about", label: m.nav.about },
     { href: cvHref, label: m.nav.cv },
