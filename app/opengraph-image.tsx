@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Idriss Mouaden — Economics, banking, and financial institutions";
+export const alt = "Idriss Mouaden — Banking, finance, and business analysis";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -38,10 +38,10 @@ export default function OpenGraphImage() {
         </div>
         <div style={{ display: "flex", flexDirection: "column", maxWidth: 970 }}>
           <div style={{ color: "#7a2430", fontFamily: "Arial, sans-serif", fontSize: 19, letterSpacing: "0.18em", marginBottom: 26 }}>
-            ECONOMICS · BANKING · FINANCIAL INSTITUTIONS
+            BANKING · FINANCE · BUSINESS ANALYSIS
           </div>
           <div style={{ fontFamily: "Georgia, serif", fontSize: 76, letterSpacing: "-0.045em", lineHeight: 1.02 }}>
-            Banking and financial institutions.
+            Banking, finance, and business analysis.
           </div>
         </div>
         <div style={{ alignItems: "center", display: "flex", fontFamily: "Arial, sans-serif", fontSize: 20, justifyContent: "space-between" }}>

@@ -3,9 +3,9 @@ import type { ContentItem } from "@/lib/content-types";
 
 export const siteConfig = {
   name: "Idriss Mouaden",
-  title: "Idriss Mouaden — Economics, Banking & Financial Institutions",
+  title: "Idriss Mouaden — Banking, Finance & Business Analysis",
   description:
-    "Research, essays, and financial analysis by Idriss Mouaden on banking, financial institutions, monetary economics, and political economy.",
+    "Financial research, company analysis, professional experience, and essays by Idriss Mouaden on banking, finance, business strategy, and economics.",
   url: "https://www.idrissmouaden.com",
   locale: "en_GB",
   language: "en",
@@ -219,12 +219,14 @@ export const websiteStructuredData = {
       name: siteConfig.name,
       url: siteConfig.url,
       sameAs: ["https://orcid.org/0009-0007-7001-022X"],
-      jobTitle: "Independent student researcher",
+      jobTitle: "Independent researcher and investment analyst",
       description:
-        "Economics student and independent researcher focused on banking, financial systems, and monetary institutions.",
+        "High-school student, independent researcher, and investment analyst focused on banking, financial analysis, business strategy, and economics.",
       knowsAbout: [
         "Economics",
         "Banking",
+        "Financial analysis",
+        "Business strategy",
         "Financial institutions",
         "Monetary economics",
         "Political economy",

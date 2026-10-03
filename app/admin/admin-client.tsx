@@ -359,10 +359,10 @@ export function AdminClient() {
 
         <div className="form-row two-columns">
           <label>Status line — English (optional)
-            <input maxLength={80} value={form.displayStatusEn ?? ""} onChange={(event) => set("displayStatusEn", event.target.value)} placeholder="e.g. Submitted · Decision pending" />
+            <input maxLength={80} value={form.displayStatusEn ?? ""} onChange={(event) => set("displayStatusEn", event.target.value)} placeholder="e.g. Published" />
           </label>
           <label>Status line — Spanish (optional)
-            <input maxLength={80} value={form.displayStatusEs ?? ""} onChange={(event) => set("displayStatusEs", event.target.value)} placeholder="p. ej. Enviado · Decisión pendiente" />
+            <input maxLength={80} value={form.displayStatusEs ?? ""} onChange={(event) => set("displayStatusEs", event.target.value)} placeholder="p. ej. Publicado" />
           </label>
         </div>
 

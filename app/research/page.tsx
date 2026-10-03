@@ -31,13 +31,6 @@ export default async function ResearchPage() {
           <h1>{m.researchPage.title}</h1>
           <p>{m.researchPage.intro}</p>
         </header>
-        <section className="detail-content" aria-labelledby="current-research">
-          <p className="detail-label">{m.researchPage.currentProject}</p>
-          <div>
-            <h2 id="current-research">{m.profile.currentResearchTitle}</h2>
-            <p>{m.profile.currentResearchDescription}</p>
-          </div>
-        </section>
         <section className="publication-index" aria-labelledby="research-list">
           <p className="detail-label">{m.researchPage.selectedWork}</p>
           <div className="publication-list">
@@ -59,6 +52,13 @@ export default async function ResearchPage() {
                 </div>
               </article>
             ))}
+          </div>
+        </section>
+        <section className="detail-content" aria-labelledby="current-research">
+          <p className="detail-label">{m.researchPage.currentProject}</p>
+          <div>
+            <h2 id="current-research">{m.profile.currentResearchTitle}</h2>
+            <p>{m.profile.currentResearchDescription}</p>
           </div>
         </section>
       </main>

@@ -9,6 +9,6 @@ update public.content_items set
 where slug = 'cashlessness-and-monetary-discretion';
 
 update public.content_items set
-  display_status_en = 'Submitted · Decision pending',
-  display_status_es = 'Enviado · Decisión pendiente'
+  display_status_en = 'Published',
+  display_status_es = 'Publicado'
 where slug = 'the-end-of-exit';

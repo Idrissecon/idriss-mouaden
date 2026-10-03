@@ -44,6 +44,8 @@ export const metadata: Metadata = {
     "political economy",
     "bank liquidity",
     "investment analysis",
+    "business analysis",
+    "business strategy",
   ],
   alternates: {
     canonical: "/",
@@ -71,7 +73,7 @@ export const metadata: Metadata = {
       url: "/opengraph-image",
       width: 1200,
       height: 630,
-      alt: `${siteConfig.name} — Economics, banking, and financial institutions`,
+      alt: `${siteConfig.name} — Banking, finance, and business analysis`,
     }],
   },
   twitter: {

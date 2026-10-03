@@ -14,7 +14,7 @@ export function publicationOgImage(
   item: Pick<ContentItem, "title" | "venue" | "year"> | null,
   category: "research" | "writing",
 ) {
-  const title = item?.title ?? "Banking and financial institutions.";
+  const title = item?.title ?? "Banking, finance, and business analysis.";
   const eyebrow = [
     category === "research" ? "RESEARCH" : "WRITING",
     item?.venue?.toUpperCase(),
