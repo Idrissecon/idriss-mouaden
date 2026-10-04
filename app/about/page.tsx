@@ -31,7 +31,7 @@ export default async function AboutPage() {
       <section className="detail-content" aria-labelledby="about-research">
         <p className="detail-label">{m.about.currentResearch}</p>
         <div>
-          <h2 id="about-research">{m.profile.currentResearchTitle}</h2>
+          <h2 id="about-research" lang="en">{m.profile.currentResearchTitle}</h2>
           <p>{m.profile.currentResearchDescription}</p>
         </div>
       </section>

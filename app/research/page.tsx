@@ -57,7 +57,7 @@ export default async function ResearchPage() {
         <section className="detail-content" aria-labelledby="current-research">
           <p className="detail-label">{m.researchPage.currentProject}</p>
           <div>
-            <h2 id="current-research">{m.profile.currentResearchTitle}</h2>
+            <h2 id="current-research" lang="en">{m.profile.currentResearchTitle}</h2>
             <p>{m.profile.currentResearchDescription}</p>
           </div>
         </section>

@@ -94,7 +94,7 @@ export default async function Home() {
         <div className="section-body">
           <article className="featured-work homepage-feature">
             <p className="work-meta">{m.common.inProgress}</p>
-            <h3>{m.profile.currentResearchTitle}</h3>
+            <h3 lang="en">{m.profile.currentResearchTitle}</h3>
             <p>{m.profile.currentResearchDescription}</p>
             <Link className="text-link" href="/research#current-research">{m.home.researchProfile} <Arrow /></Link>
           </article>
