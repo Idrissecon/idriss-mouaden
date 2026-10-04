@@ -1,3 +1,5 @@
+import type { Locale } from "@/lib/i18n";
+
 export const profile = {
   location: "Córdoba, Spain",
   role: "High-school student, independent researcher, and investment analyst",
@@ -33,5 +35,14 @@ export const profile = {
   contactEmail: "idriss@idrissmouaden.com",
 } as const;
 
-export const cvDocumentHref: string | null = "/documents/idriss-mouaden-academic-cv.pdf";
-export const cvHref = cvDocumentHref ?? "/cv";
+export function academicCvHref(locale: Locale) {
+  return locale === "es"
+    ? "/documents/idriss-mouaden-academic-cv-es.pdf"
+    : "/documents/idriss-mouaden-academic-cv.pdf";
+}
+
+export function professionalResumeHref(locale: Locale) {
+  return locale === "es"
+    ? "/documents/idriss-mouaden-professional-cv-es.pdf"
+    : "/documents/idriss-mouaden-professional-cv.pdf";
+}

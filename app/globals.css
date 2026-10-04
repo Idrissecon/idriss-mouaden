@@ -1971,3 +1971,14 @@ h2 {
     font-size: clamp(3rem, 13vw, 5rem);
   }
 }
+
+.document-languages {
+  margin-top: 0.65rem;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+.document-languages a {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}

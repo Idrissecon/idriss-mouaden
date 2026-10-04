@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { messages, type Locale } from "@/lib/i18n";
-import { cvHref, profile } from "@/lib/profile";
+import { academicCvHref, profile } from "@/lib/profile";
 
 export function SiteFooter({ locale }: { locale: Locale }) {
   const m = messages(locale);
@@ -18,7 +18,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
           <Link href="/experience">{m.nav.experience}</Link>
           <Link href="/writing">{m.nav.writing}</Link>
           <Link href="/about">{m.nav.about}</Link>
-          <Link href={cvHref}>{m.nav.cv}</Link>
+          <Link href={academicCvHref(locale)}>{m.nav.cv}</Link>
           <Link href="/resume">{m.experiencePage.resume}</Link>
         </nav>
         <div className="footer-bottom">

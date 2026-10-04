@@ -4,7 +4,7 @@ import { ExperienceList } from "@/app/components/experience-list";
 import { contentDisplayStatus, contentHref, contentMeta, listPublishedContent } from "@/lib/content";
 import { messages } from "@/lib/i18n";
 import { getLocale } from "@/lib/locale";
-import { cvHref, profile } from "@/lib/profile";
+import { academicCvHref, profile } from "@/lib/profile";
 import { pageMetadata, siteConfig } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -43,7 +43,7 @@ export default async function Home() {
           <div className="hero-actions" aria-label={m.home.primaryPages}>
             <Link className="text-link accent-link" href="/research">{m.nav.research} <Arrow /></Link>
             <Link className="text-link" href="/experience">{m.nav.experience} <Arrow /></Link>
-            <Link className="text-link" href={cvHref}>{m.nav.cv} <Arrow /></Link>
+            <Link className="text-link" href={academicCvHref(locale)}>{m.nav.cv} <Arrow /></Link>
           </div>
         </div>
       </section>
@@ -127,7 +127,7 @@ export default async function Home() {
       {/* Preserve existing inbound Home anchors while their content lives on dedicated pages. */}
       <div className="shell profile-page-links" id="about">
         <Link className="text-link" href="/about">{m.nav.about} <Arrow /></Link>
-        <Link className="text-link" href="/resume" id="cv">{m.experiencePage.resume} — {m.experiencePage.resumeStatus}</Link>
+        <Link className="text-link" href="/resume" id="cv">{m.experiencePage.resume}</Link>
       </div>
     </main>
   );

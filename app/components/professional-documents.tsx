@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { messages, type Locale } from "@/lib/i18n";
-import { cvHref } from "@/lib/profile";
+import { academicCvHref, professionalResumeHref } from "@/lib/profile";
 
 export function ProfessionalDocuments({ locale }: { locale: Locale }) {
   const e = messages(locale).experiencePage;
@@ -10,8 +10,22 @@ export function ProfessionalDocuments({ locale }: { locale: Locale }) {
       <div>
         <h2 id="professional-documents">{e.documents}</h2>
         <div className="professional-documents">
-          <Link className="text-link" href={cvHref}>{e.academicCv} ↗</Link>
-          <p>{e.resume} — {e.resumeStatus}</p>
+          <div>
+            <Link className="text-link" href={academicCvHref(locale)}>{e.academicCv}</Link>
+            <p className="document-languages">
+              <a href={academicCvHref("en")} lang="en" hrefLang="en">English</a>
+              {" · "}
+              <a href={academicCvHref("es")} lang="es" hrefLang="es">Español</a>
+            </p>
+          </div>
+          <div>
+            <Link className="text-link" href={professionalResumeHref(locale)}>{e.resume}</Link>
+            <p className="document-languages">
+              <a href={professionalResumeHref("en")} lang="en" hrefLang="en">English</a>
+              {" · "}
+              <a href={professionalResumeHref("es")} lang="es" hrefLang="es">Español</a>
+            </p>
+          </div>
         </div>
       </div>
     </section>

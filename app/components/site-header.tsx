@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LanguageSwitcher } from "@/app/components/language-switcher";
 import { messages, type Locale } from "@/lib/i18n";
-import { cvHref } from "@/lib/profile";
+import { academicCvHref } from "@/lib/profile";
 
 export function SiteHeader({ locale }: { locale: Locale }) {
   const pathname = usePathname();
@@ -14,7 +14,7 @@ export function SiteHeader({ locale }: { locale: Locale }) {
     { href: "/experience", label: m.nav.experience },
     { href: "/writing", label: m.nav.writing },
     { href: "/about", label: m.nav.about },
-    { href: cvHref, label: m.nav.cv },
+    { href: academicCvHref(locale), label: m.nav.cv },
   ];
 
   return (

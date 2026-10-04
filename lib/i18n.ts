@@ -117,9 +117,8 @@ const translations = {
       reports: "Ver informes de inversión →",
       documents: "Documentos",
       academicCv: "CV académico",
-      resume: "Professional Resume",
-      resumeStatus: "Próximamente",
-      resumeDescription: "Espacio reservado para un futuro currículum profesional en PDF.",
+      resume: "CV profesional",
+      resumeDescription: "Currículum profesional de Idriss Mouaden. Disponible en español e inglés.",
     },
     cv: {
       description: "CV académico de Idriss Mouaden: educación, investigación independiente, análisis de inversiones, reconocimientos, debate y oratoria.",
@@ -289,8 +288,7 @@ const translations = {
       documents: "Documents",
       academicCv: "Academic CV",
       resume: "Professional Resume",
-      resumeStatus: "Coming soon",
-      resumeDescription: "A space for a future professional resume PDF.",
+      resumeDescription: "Professional resume of Idriss Mouaden. Available in English and Spanish.",
     },
     cv: {
       description: "Academic CV of Idriss Mouaden: education, independent research, investment analysis, recognition, debate, and public speaking.",
