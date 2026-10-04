@@ -14,7 +14,7 @@ export const profile = {
       "Research on how bank liquidity differs from the conventional marketability of assets, and how collateral eligibility, encumbrance, haircuts, pre-positioning, and access to funding channels shape the liquidity a bank can obtain under stress.",
   },
   recognition: {
-    title: "2026 Global Essay Prize shortlist",
+    title: "High Commendation · 2026 Global Essay Prize",
     organisation: "John Locke Institute",
     work: "Cashlessness and Monetary Discretion",
   },

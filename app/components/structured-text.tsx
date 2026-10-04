@@ -1,7 +1,7 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
 
-const sectionHeadings = new Set(["Introduction", "Exit as the Constraint on Power", "The Internalization of Intervention", "Cashlessness and the Destruction of Monetary Exit", "Identity, Permissioned Markets, and Entrepreneurial Discovery", "The Dynamics of Cumulative Digital Intervention", "Conclusion", "Works Cited", "Bibliography", "Notes"]);
+const sectionHeadings = new Set(["Introduction", "The Nature of Money", "Cash as the Last Non-Discretionary Settlement Layer", "Cashlessness and the Expansion of Monetary Discretion", "Incentives, Power and Institutional Risk", "Monetary Freedom and Individual Sovereignty", "Exit as the Constraint on Power", "The Internalization of Intervention", "Cashlessness and the Destruction of Monetary Exit", "Identity, Permissioned Markets, and Entrepreneurial Discovery", "The Dynamics of Cumulative Digital Intervention", "Conclusion", "Works Cited", "Bibliography", "Notes"]);
 
 type StructuredFigure = {
   alt: string;

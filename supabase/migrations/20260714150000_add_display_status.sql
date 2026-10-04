@@ -4,8 +4,8 @@ alter table public.content_items
 
 -- Backfill the statuses previously hardcoded in the application.
 update public.content_items set
-  display_status_en = 'Shortlisted · Full text forthcoming',
-  display_status_es = 'Preseleccionado · Texto completo próximamente'
+  display_status_en = 'High Commendation',
+  display_status_es = 'High Commendation'
 where slug = 'cashlessness-and-monetary-discretion';
 
 update public.content_items set

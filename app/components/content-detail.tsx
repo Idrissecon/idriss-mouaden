@@ -16,6 +16,7 @@ export function ContentDetail({ item, locale }: { item: PublicContentItem; local
       : null;
   const isSynchronyReport = item.slug === "synchrony-financial-investment-report";
   const isEndOfExitEssay = item.slug === "the-end-of-exit";
+  const isCashlessnessEssay = item.slug === "cashlessness-and-monetary-discretion";
   const isNationStateEssay = item.slug === "nations-states-and-the-free-evolution-of-social-order";
   return (
     <main className="detail-page shell publication-page">
@@ -65,6 +66,12 @@ export function ContentDetail({ item, locale }: { item: PublicContentItem; local
               openLabel: "Open Figure 1 at full resolution",
               src: "/images/the-end-of-exit/ratchet-effect.png",
               width: 780,
+            } : isCashlessnessEssay ? {
+              alt: "Ratchet effect in monetary policy discretion following removal of the zero lower bound",
+              height: 840,
+              openLabel: "Open Figure 1 at full resolution",
+              src: "/images/cashlessness-and-monetary-discretion/ratchet-effect.png",
+              width: 1100,
             } : undefined}
           />
         </article>

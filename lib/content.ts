@@ -74,12 +74,12 @@ export function contentMeta(item: ContentItem) {
 
 const displayStatusBySlug: Record<Locale, Record<string, string> & { default: string }> = {
   en: {
-    "cashlessness-and-monetary-discretion": "Shortlisted · Full text forthcoming",
+    "cashlessness-and-monetary-discretion": "High Commendation",
     "the-end-of-exit": "Published",
     default: "Published",
   },
   es: {
-    "cashlessness-and-monetary-discretion": "Preseleccionado · Texto completo próximamente",
+    "cashlessness-and-monetary-discretion": "High Commendation",
     "the-end-of-exit": "Publicado",
     default: "Publicado",
   },
