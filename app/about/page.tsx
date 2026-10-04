@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { messages } from "@/lib/i18n";
 import { getLocale } from "@/lib/locale";
+import { profile } from "@/lib/profile";
 import { pageMetadata } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -39,6 +40,14 @@ export default async function AboutPage() {
         <div>
           <h2 id="about-interests">{m.about.intellectualInterests}</h2>
           <p>{m.about.interests}</p>
+        </div>
+      </section>
+      <section className="detail-content" aria-labelledby="about-recognition">
+        <p className="detail-label">{m.home.recognition}</p>
+        <div>
+          <h2 id="about-recognition">{m.profile.recognitionTitle}</h2>
+          <p>{profile.recognition.organisation} · Economics</p>
+          <Link className="text-link section-link" href="/writing/cashlessness-and-monetary-discretion">{profile.recognition.work}</Link>
         </div>
       </section>
       <section className="detail-content" aria-labelledby="about-activities">
